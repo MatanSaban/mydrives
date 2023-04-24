@@ -192,7 +192,7 @@ const MyDay = (props) => {
 
     return (
         <div className={styles.myDay}>
-            <button onClick={() => setShowAddDriveForm(!showAddDriveForm)}>
+            <button className={styles.addDriveButton} onClick={() => setShowAddDriveForm(!showAddDriveForm)}>
                 {showAddDriveForm ? "סגירת הוספת נסיעה" : "הוספת נסיעה"}
             </button>
             <button
