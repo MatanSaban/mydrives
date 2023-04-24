@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./table.module.scss";
 import TableFooter from "./TableFooter";
-import { AiOutlineEdit } from "react-icons/ai";
-import { BsTrash } from "react-icons/bs";
 import axios from "axios";
-import EditRow from "./editRow";
-import ReactDOM from "react-dom";
+import EditRow from "./EditRow";
 import TableRow from "./TableRow";
 
 
