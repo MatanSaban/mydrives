@@ -135,7 +135,7 @@
 @media only screen and (max-width: 1023px) {
     .table {
         border-collapse: collapse;
-        width: fit-content;
+        width: 100%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2509803922);
         border-radius: 0;
         .header {
@@ -159,6 +159,7 @@
         }
         .row {
             justify-content: space-around;
+            overflow-wrap: anywhere;
             .cell {
                 padding: 4px 0;
                 flex: 1 1;
