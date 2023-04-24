@@ -1,0 +1,21 @@
+.myDay {
+    .selectButton {
+        margin-bottom: 30px;
+        padding: 0;
+        select {
+            background: none;
+            border: none;
+            font-size: 20px;
+            width: 90%;
+            margin: 8px 10px;
+        }
+    }
+    .betweenDates {
+        margin-bottom: 30px;
+        input {
+            padding: 5px;
+            border-radius: 20px;
+            border: none;
+        }
+    }
+}

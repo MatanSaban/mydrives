@@ -1,0 +1,36 @@
+.myDrivesWrapper {
+    text-align: center;
+    .tableWrapper {
+        width: 70%;
+        margin: -20px auto 0 auto;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .myDrivesWrapper {
+        text-align: center;
+        .tableWrapper {
+            width: fit-content;
+            margin: 0 auto;
+        }
+    }
+}
+@media only screen and ((min-width: 1024px) and (max-width: 1279px)) {
+    // laptop
+    .myDrivesWrapper {
+        text-align: center;
+        .tableWrapper {
+            width: 80%;
+            margin: 0 auto;
+        }
+    }
+}
+@media only screen and ((min-width: 768px) and (max-width: 1023px)) {
+    // tablet
+    .myDrivesWrapper {
+        text-align: center;
+        .tableWrapper {
+            width: 80%;
+            margin: 0 auto;
+        }
+    }
+}

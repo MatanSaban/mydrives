@@ -1,0 +1,88 @@
+$bg-color: #ffedb1;
+$font-family: "assistant";
+
+body {
+    background-color: $bg-color;
+    font-family: $font-family;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    position: relative;
+    // overflow-x: hidden;
+    #__next {
+        position: relative;
+    }
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    button {
+        font-family: $font-family;
+        cursor: pointer;
+        margin: 0 10px;
+        border-radius: 50px;
+        border: none;
+        padding: 8px 20px;
+        font-size: 1.3rem;
+        font-weight: 300;
+        background-color: #ffc400;
+        box-shadow: 0 5px 10px #b28800;
+        color: rgb(0, 0, 0);
+        transition: all 0.3s ease;
+        &:hover {
+            background-color: #5279f9;
+            box-shadow: 0 5px 10px #5279f9;
+            color: white;
+        }
+    }
+    form,
+    input,
+    select,
+    label,
+    option {
+        font-family: $font-family;
+        outline: none;
+    }
+}
+/* Set the width of the scrollbar */
+body::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Style the scrollbar track */
+body::-webkit-scrollbar-track {
+    background-color: #ffefb8;
+    /* use any color you want */
+    border-radius: 20px;
+}
+
+/* Style the scrollbar thumb */
+body::-webkit-scrollbar-thumb {
+    background-color: #ffd446;
+    border-radius: 20px;
+}
+
+/* Optionally, add hover and active styles for the thumb */
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #f9b115;
+}
+
+body::-webkit-scrollbar-thumb:active {
+    background-color: #e29200;
+}
+
+/* Firefox scrollbar styles */
+body {
+    scrollbar-width: thin;
+    scrollbar-color: #ffd446 #f2f2f2;
+}
+
+body::-moz-scrollbar-thumb {
+    background-color: #ffd446;
+    border-radius: 20px;
+}
+
+body::-moz-scrollbar-track {
+    background-color: #ffefb8;
+    border-radius: 20px;
+}

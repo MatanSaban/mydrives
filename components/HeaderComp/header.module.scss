@@ -1,0 +1,202 @@
+#header {
+    background-color: #f9d252;
+    color: rgb(0, 0, 0);
+    height: 100px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    padding: 0 50px;
+    margin: 0 50px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.467);
+    border-radius: 0 0 100px 100px;
+    z-index: 999;
+    .logo {
+        width: 25%;
+        text-align: right;
+    }
+    .mainMenu {
+        width: 50%;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            li {
+                margin-left: 20px;
+                font-size: 20px;
+                padding: 10px;
+                border-radius: 50px;
+                transition: all 0.3s ease;
+                &:hover {
+                    background-color: white;
+                }
+            }
+        }
+    }
+    .userComp {
+        width: 25%;
+        display: flex;
+        justify-content: flex-end;
+        .logout {
+            background-color: rgb(255, 77, 77);
+            box-shadow: 0 5px 10px rgba(255, 77, 77, 0.522);
+            color: white;
+            &:hover {
+                background-color: rgb(212, 54, 54);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    #header {
+        .logo {
+            margin-right: 20px;
+        }
+    }
+    .mainMenu {
+        width: 50%;
+        margin: 0 auto;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .mobileMenuButton {
+            height: 100%;
+            width: fit-content;
+            position: relative;
+            .lines {
+                height: 100%;
+                position: relative;
+                width: 40px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                transition: all 0.4s ease;
+                .line {
+                    width: 100%;
+                    height: 5px;
+                    border-radius: 50px;
+                    background-color: black;
+                    transition: all 0.4s ease;
+                }
+                #line1 {
+                    transform: rotate(0) translateY(0%);
+                    top: 0%;
+                    position: absolute;
+                    transition: all 0.4s ease;
+                }
+                #line2 {
+                    margin-left: 0;
+                    opacity: 1;
+                    top: 50%;
+                    position: absolute;
+                    transition: all 0.4s ease;
+                }
+                #line3 {
+                    transform: rotate(0) translateY(0%);
+                    top: 100%;
+                    position: absolute;
+                    transition: all 0.4s ease;
+                }
+            }
+        }
+        .mobileMenuButton.open {
+            .lines {
+                height: 100%;
+                position: relative;
+                width: 50px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                transition: all 0.6s ease;
+                #line1 {
+                    transform: rotate(45deg) translateY(0%);
+                    top: 50%;
+                    position: absolute;
+                    transition: all 0.6s ease;
+                }
+                #line2 {
+                    margin-left: -100px;
+                    opacity: 0;
+                    transition: all 0.6s ease;
+                }
+                #line3 {
+                    transform: rotate(-45deg) translateY(0%);
+                    top: 50%;
+                    position: absolute;
+                    transition: all 0.6s ease;
+                }
+            }
+        }
+    }
+    #header + .mobileMenuModal {
+        background-color: #000000;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: -100%;
+        left: 0;
+        z-index: 9;
+        transition: all 0.6s ease;
+    }
+    #header.open + .mobileMenuModal {
+        background-color: #000000;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0%;
+        left: 0;
+        padding-top: 15vh;
+        z-index: 9;
+        transition: all 0.6s ease;
+        h4 {
+            color: white;
+            font-size: 40px;
+            text-align: center;
+            margin: 0;
+        }
+        ul {
+            padding: 20px;
+            margin: 0 auto;
+            text-align: center;
+            li {
+                margin: 20px 0;
+                a {
+                    color: #f9d252;
+                    font-size: 30px;
+                    font-weight: bold;
+                }
+            }
+        }
+        .userComp {
+            display: flex;
+            flex-direction: column;
+            button {
+                margin: 20px auto;
+                font-size: 30px;
+                font-weight: bold;
+                width: 50%;
+            }
+            .logout {
+                background-color: rgb(255, 77, 77);
+                box-shadow: 0 5px 10px rgba(255, 77, 77, 0.522);
+                color: white;
+                &:hover {
+                    background-color: rgb(212, 54, 54);
+                }
+            }
+        }
+    }
+}

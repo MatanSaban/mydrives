@@ -1,0 +1,41 @@
+.main {
+    form {
+        width: fit-content;
+        margin: 0 auto;
+        text-align: center;
+        .inputsWrapper {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            text-align: right;
+            .dataWrapper {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                margin: 10px;
+                input {
+                    padding: 15px;
+                    min-width: 250px;
+                    border-radius: 30px;
+                    border: none;
+                    font-size: 20px;
+                }
+            }
+        }
+        button.submit {
+            margin-top: 20px;
+        }
+    }
+}
+@media only screen and (max-width: 767px) {
+    .main {
+        form {
+            .inputsWrapper {
+                grid-template-columns: repeat(1, 1fr);
+                .dataWrapper {
+                    input {
+                    }
+                }
+            }
+        }
+    }
+}

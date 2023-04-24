@@ -1,0 +1,17 @@
+#hero {
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .heading {
+        font-size: 3rem;
+    }
+}
+@media only screen and (max-width: 767px) {
+    #hero {
+        .heading {
+            font-size: 2rem;
+            text-align: center;
+        }
+    }
+}
