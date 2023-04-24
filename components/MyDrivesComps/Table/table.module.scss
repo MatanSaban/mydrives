@@ -198,6 +198,7 @@
         }
         .footer {
             align-items: center;
+            flex-direction: column;
             .footerCell {
                 font-size: 16px;
             }
