@@ -24,7 +24,9 @@
         display: flex;
         flex-direction: column;
         margin: 0 10px;
-        input {
+        input,
+        input[type="date"],
+        input[type="time"] {
             padding: 5px;
             border-radius: 50px;
             border: none;
