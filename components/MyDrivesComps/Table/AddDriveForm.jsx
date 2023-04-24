@@ -74,10 +74,16 @@ const AddDriveForm = (props) => {
                 לקוח:
                 <input type="text" name="client" required />
             </label>
-            <label>
-                תיאור:
-                <input type="text" name="description" />
-            </label>
+            <div className={styles.oneInRow}>
+                <label>
+                    תיאור:
+                    <textarea
+                        name="description"
+                        id="description"
+                        rows="4"
+                    ></textarea>
+                </label>
+            </div>
             <label>
                 שעת התחלה:
                 <input type="time" name="start_time" required />
@@ -96,7 +102,14 @@ const AddDriveForm = (props) => {
             </label>
             <label>
                 מחיר הדלק לליטר:
-                <input type="number" step={0.01} name="fuelPrice" required defaultValue={props?.fuelPrice} onChange={(e) => props.handleFuelPrice(e.target.value) } />
+                <input
+                    type="number"
+                    step={0.01}
+                    name="fuelPrice"
+                    required
+                    defaultValue={props?.fuelPrice}
+                    onChange={(e) => props.handleFuelPrice(e.target.value)}
+                />
             </label>
             <button type="submit">הוספת נסיעה לטבלה</button>
         </form>
