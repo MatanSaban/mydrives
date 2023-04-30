@@ -12,12 +12,12 @@ const MyDay = (props) => {
     const [customDates, setCustomDates] = useState(false);
 
     const applySelectedRangeFilter = (drives) => {
-        if (!drives) {
+        if (!Array.isArray(drives)) {
             return [];
         }
 
         const today = new Date();
-        const filteredDrives = drives.filter((drive) => {
+        const filteredDrives = drives?.filter((drive) => {
             const driveDate = new Date(drive.date);
             let fromDate, untilDate;
 
