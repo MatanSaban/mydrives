@@ -4,13 +4,16 @@ import styles from "./myday.module.scss";
 import Table from "../Table/Table";
 import AddDriveForm from "../Table/AddDriveForm";
 import axios from "axios";
+import { LoadScript } from "@react-google-maps/api"; // import LoadScript here
 
 const MyDay = (props) => {
-    const [showAddDriveForm, setShowAddDriveForm] = useState(false);
+    const libraries = ["places"]; // define the libraries needed
 
+    const [showAddDriveForm, setShowAddDriveForm] = useState(false);
     const [selectedRange, setSelectedRange] = useState("myDay");
     const [customDates, setCustomDates] = useState(false);
-
+    
+    
     const applySelectedRangeFilter = (drives) => {
         if (!Array.isArray(drives)) {
             return [];
@@ -46,8 +49,6 @@ const MyDay = (props) => {
         });
         return filteredDrives;
     };
-
-
 
     const [tableData, setTableData] = useState(() =>
         applySelectedRangeFilter(props?.userData?.drives)
@@ -159,12 +160,10 @@ const MyDay = (props) => {
         }
     };
 
-
     useEffect(() => {
         console.log("use effect runs my day");
         setTableData(applySelectedRangeFilter(props?.userData?.drives));
     }, [props?.userData]);
-
 
     const filterTableByCustomDates = () => {
         const fromDateInput = document.getElementById("fromDate");
@@ -188,61 +187,73 @@ const MyDay = (props) => {
         }
     };
 
-    
-
     return (
-        <div className={styles.myDay}>
-            <button className={styles.addDriveButton} onClick={() => setShowAddDriveForm(!showAddDriveForm)}>
-                {showAddDriveForm ? "סגירת הוספת נסיעה" : "הוספת נסיעה"}
-            </button>
-            <button
-                className={styles.selectButton}
-                id="selectButton" // added id attribute here
-            >
-                <select defaultValue={"myDay"} onChange={handleSelectChange}>
-                    <option value="myDay">היום שלי</option>
-                    <option value="myWeek">השבוע שלי</option>
-                    <option value="myMonth">החודש שלי</option>
-                    <option value="myAllTimes">כל הזמנים</option>
-                    <option value="myCustomDates">לפי תאריכים</option>
-                </select>
-            </button>
-            {customDates && (
-                <div className={styles.betweenDates}>
-                    <label htmlFor="fromDate"> מתאריך </label>
-                    <input
-                        type="date"
-                        name="fromDate"
-                        id="fromDate"
-                        onChange={filterTableByCustomDates}
+        <LoadScript
+            googleMapsApiKey="AIzaSyDgjKrFe0QRKr2bDKhKsxjEiphntKAs1hk"
+            libraries={libraries}
+        >
+            <div className={styles.myDay}>
+                <button
+                    className={styles.addDriveButton}
+                    onClick={() => setShowAddDriveForm(!showAddDriveForm)}
+                >
+                    {showAddDriveForm ? "סגירת הוספת נסיעה" : "הוספת נסיעה"}
+                </button>
+                <button
+                    className={styles.selectButton}
+                    id="selectButton" // added id attribute here
+                >
+                    <select
+                        defaultValue={"myDay"}
+                        onChange={handleSelectChange}
+                    >
+                        <option value="myDay">היום שלי</option>
+                        <option value="myWeek">השבוע שלי</option>
+                        <option value="myMonth">החודש שלי</option>
+                        <option value="myAllTimes">כל הזמנים</option>
+                        <option value="myCustomDates">לפי תאריכים</option>
+                    </select>
+                </button>
+                {customDates && (
+                    <div className={styles.betweenDates}>
+                        <label htmlFor="fromDate"> מתאריך </label>
+                        <input
+                            type="date"
+                            name="fromDate"
+                            id="fromDate"
+                            onChange={filterTableByCustomDates}
+                        />
+                        <label htmlFor="untilDate"> עד תאריך </label>
+                        <input
+                            type="date"
+                            name="untilDate"
+                            id="untilDate"
+                            onChange={filterTableByCustomDates}
+                        />
+                    </div>
+                )}
+                {showAddDriveForm && (
+                    <AddDriveForm
+                        handleFuelPrice={props.handleFuelPrice}
+                        fuelPrice={props?.fuelPrice}
+                        when="today"
+                        onAddDrive={addDrive}
                     />
-                    <label htmlFor="untilDate"> עד תאריך </label>
-                    <input
-                        type="date"
-                        name="untilDate"
-                        id="untilDate"
-                        onChange={filterTableByCustomDates}
-                    />
-                </div>
-            )}
-            {showAddDriveForm && (
-                <AddDriveForm
+                )}
+                {console.log(
+                    "Filtered table data passed to Table component: ",
+                    tableData
+                )}
+                <Table
                     handleFuelPrice={props.handleFuelPrice}
                     fuelPrice={props?.fuelPrice}
-                    when="today"
-                    onAddDrive={addDrive}
+                    userData={props?.userData}
+                    data={tableData}
+                    handlePopup={props.handlePopup}
+                    handleUserData={props.handleUserData}
                 />
-            )}
-            {console.log("Filtered table data passed to Table component: ", tableData)}
-            <Table
-                handleFuelPrice={props.handleFuelPrice}
-                fuelPrice={props?.fuelPrice}
-                userData={props?.userData}
-                data={tableData}
-                handlePopup={props.handlePopup}
-                handleUserData={props.handleUserData}
-            />
-        </div>
+            </div>
+        </LoadScript>
     );
 };
 

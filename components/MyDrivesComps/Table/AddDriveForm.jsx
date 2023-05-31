@@ -17,6 +17,8 @@ const AddDriveForm = (props) => {
     };
 
     const handleStartPointSelect = async (place) => {
+        console.log('place');
+        console.log(place);
         setStartPoint(place.formatted_address);
 
         // calculate distance if both startPoint and endPoint are selected
@@ -132,10 +134,6 @@ const AddDriveForm = (props) => {
 
 
     return (
-        <LoadScript
-            googleMapsApiKey="AIzaSyDgjKrFe0QRKr2bDKhKsxjEiphntKAs1hk"
-            libraries={libraries}
-        >
             <form className={styles.addDriveform} onSubmit={handleSubmit}>
                 <label>
                     תאריך נסיעה:
@@ -184,6 +182,7 @@ const AddDriveForm = (props) => {
                             type="text"
                             value={startPoint}
                             onChange={handleStartPointChange}
+                            onBlur={handleStartPointChange}
                         />
                     </Autocomplete>
                 </label>
@@ -202,6 +201,7 @@ const AddDriveForm = (props) => {
                             type="text"
                             value={endPoint}
                             onChange={handleEndPointChange}
+                            onBlur={handleEndPointChange}
                         />
                     </Autocomplete>
                 </label>
@@ -232,7 +232,6 @@ const AddDriveForm = (props) => {
                 </label>
                 <button type="submit">הוספת נסיעה לטבלה</button>
             </form>
-        </LoadScript>
     );
 };
 
