@@ -124,7 +124,6 @@ const AddDriveForm = (props) => {
         }
     }, [startPoint, endPoint]);
 
-    const libraries = ["places"];
 
     useEffect(() => {
         if (startPoint && endPoint) {

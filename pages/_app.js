@@ -7,6 +7,10 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useRouter } from "next/router";
 import useMediaQuery from "../components/Hooks/useMediaQuery";
+import { LoadScript } from "@react-google-maps/api";
+
+const libraries = ["places"]; // define the libraries needed
+
 
 function MyApp({ Component, pageProps }) {
     
@@ -107,7 +111,10 @@ function MyApp({ Component, pageProps }) {
 
 
     return (
-        <>
+        <LoadScript
+            googleMapsApiKey="AIzaSyDgjKrFe0QRKr2bDKhKsxjEiphntKAs1hk"
+            libraries={libraries}
+        >
             {showPopup}
             <Header
                 handlePopup={handlePopup}
@@ -132,7 +139,8 @@ function MyApp({ Component, pageProps }) {
                 isDesktopDevice={isDesktopDevice}
             />
             <Footer />
-        </>
+
+        </LoadScript>
     );
 }
 

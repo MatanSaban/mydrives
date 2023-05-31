@@ -7,7 +7,6 @@ import axios from "axios";
 import { LoadScript } from "@react-google-maps/api"; // import LoadScript here
 
 const MyDay = (props) => {
-    const libraries = ["places"]; // define the libraries needed
 
     const [showAddDriveForm, setShowAddDriveForm] = useState(false);
     const [selectedRange, setSelectedRange] = useState("myDay");
@@ -188,10 +187,7 @@ const MyDay = (props) => {
     };
 
     return (
-        <LoadScript
-            googleMapsApiKey="AIzaSyDgjKrFe0QRKr2bDKhKsxjEiphntKAs1hk"
-            libraries={libraries}
-        >
+        
             <div className={styles.myDay}>
                 <button
                     className={styles.addDriveButton}
@@ -253,7 +249,6 @@ const MyDay = (props) => {
                     handleUserData={props.handleUserData}
                 />
             </div>
-        </LoadScript>
     );
 };
 
