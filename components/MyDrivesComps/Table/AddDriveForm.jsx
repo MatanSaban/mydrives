@@ -1,9 +1,72 @@
 import React, { useEffect, useState } from "react";
-import styles from './adddriveform.module.scss';
+import styles from "./adddriveform.module.scss";
 import { v4 as uuidv4 } from "uuid";
-
+import { LoadScript, Autocomplete } from "@react-google-maps/api";
 
 const AddDriveForm = (props) => {
+    const [startPoint, setStartPoint] = useState("");
+    const [endPoint, setEndPoint] = useState("");
+    const [kilometers, setKilometers] = useState(0);
+
+    const handleStartPointChange = (e) => {
+        setStartPoint(e.target.value);
+    };
+
+    const handleEndPointChange = (e) => {
+        setEndPoint(e.target.value);
+    };
+
+    const handleStartPointSelect = async (place) => {
+        setStartPoint(place.formatted_address);
+
+        // calculate distance if both startPoint and endPoint are selected
+        if (endPoint) {
+            const distance = await calculateDistance(startPoint, endPoint);
+            setKilometers(distance);
+        }
+    };
+
+    const handleEndPointSelect = async (place) => {
+        setEndPoint(place.formatted_address);
+
+        // calculate distance if both startPoint and endPoint are selected
+        if (startPoint) {
+            const distance = await calculateDistance(startPoint, endPoint);
+            setKilometers(distance);
+        }
+    };
+
+
+    // And update the calculateDistance function like this:
+    const calculateDistance = async () => {
+        const service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+            {
+                origins: [startPoint],
+                destinations: [endPoint],
+                travelMode: google.maps.TravelMode.DRIVING,
+            },
+            (response, status) => {
+                console.log(response); // Add this line to log the entire response object
+                if (
+                    status === google.maps.DistanceMatrixStatus.OK &&
+                    response.rows[0] &&
+                    response.rows[0].elements[0] &&
+                    response.rows[0].elements[0].distance
+                ) {
+                    const distanceInMeters =
+                        response.rows[0].elements[0].distance.value;
+                    const distanceInKilometers = distanceInMeters / 1000;
+                    setKilometers(distanceInKilometers);
+                } else {
+                    console.error(`Error was: ${status}`);
+                    setKilometers(0);
+                }
+
+            }
+        );
+    };
+
 
     const currentDate = (divided) => {
         const date = new Date();
@@ -13,29 +76,25 @@ const AddDriveForm = (props) => {
         if (divided) {
             return { day: day, month: parseInt(month), year: year };
         } else {
-            return `${day}/${month}/${year}`
+            return `${day}/${month}/${year}`;
         }
-    }
-    
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formData = new FormData(event.target);
         const drive = {
-            client: formData.get("client"),
-            startTime: formData.get("start_time"),
-            endTime: formData.get("end_time"),
-            description: formData.get("description"),
-            kilometers: parseInt(formData.get("kilometers")),
-            price: parseInt(formData.get("price")),
-            date: formData.get("date"),
-            fuelPrice: formData.get("fuelPrice"),
+            client: event.target.client.value,
+            startTime: event.target.start_time.value,
+            endTime: event.target.end_time.value,
+            description: event.target.description.value,
+            kilometers: kilometers,
+            price: parseInt(event.target.price.value),
+            date: event.target.date.value,
+            fuelPrice: event.target.fuelPrice.value,
             id: uuidv4(),
         };
         props.onAddDrive(drive);
     };
-
-    
-
 
     const [driveDate, setDriveDate] = useState();
 
@@ -46,7 +105,7 @@ const AddDriveForm = (props) => {
         e.target.value = val;
         e.target.defaultValue = val;
         setDriveDate(val);
-    }
+    };
 
     useEffect(() => {
         const date = new Date();
@@ -55,65 +114,128 @@ const AddDriveForm = (props) => {
         const year = date.getFullYear();
         console.log(`${year}-${month}-${day}`);
         setDriveDate(`${year}-${month}-${day}`);
-    },[])
+    }, []);
+
+    useEffect(() => {
+        if (startPoint && endPoint) {
+            calculateDistance();
+        }
+    }, [startPoint, endPoint]);
+
+    const libraries = ["places"];
+
+    useEffect(() => {
+        if (startPoint && endPoint) {
+            calculateDistance();
+        }
+    }, [startPoint, endPoint]);
 
 
     return (
-        <form className={styles.addDriveform} onSubmit={handleSubmit}>
-            <label>
-                תאריך נסיעה:
-                <input
-                    type="date"
-                    name="date"
-                    required
-                    defaultValue={driveDate}
-                    onChange={(e) => handleDriveDate(e)}
-                />
-            </label>
-            <label>
-                לקוח:
-                <input type="text" name="client" required />
-            </label>
-            <div className={styles.oneInRow}>
+        <LoadScript
+            googleMapsApiKey="AIzaSyDgjKrFe0QRKr2bDKhKsxjEiphntKAs1hk"
+            libraries={libraries}
+        >
+            <form className={styles.addDriveform} onSubmit={handleSubmit}>
                 <label>
-                    תיאור:
-                    <textarea
-                        name="description"
-                        id="description"
-                        rows="4"
-                    ></textarea>
+                    תאריך נסיעה:
+                    <input
+                        type="date"
+                        name="date"
+                        required
+                        defaultValue={driveDate}
+                        onChange={(e) => handleDriveDate(e)}
+                    />
                 </label>
-            </div>
-            <label>
-                שעת התחלה:
-                <input type="time" name="start_time" required />
-            </label>
-            <label>
-                שעת סיום:
-                <input type="time" name="end_time" required />
-            </label>
-            <label>
-                קילומטרים:
-                <input type="number" name="kilometers" required />
-            </label>
-            <label>
-                מחיר:
-                <input type="number" name="price" required />
-            </label>
-            <label>
-                מחיר הדלק לליטר:
-                <input
-                    type="number"
-                    step={0.01}
-                    name="fuelPrice"
-                    required
-                    defaultValue={props?.fuelPrice}
-                    onChange={(e) => props.handleFuelPrice(e.target.value)}
-                />
-            </label>
-            <button type="submit">הוספת נסיעה לטבלה</button>
-        </form>
+                <label>
+                    לקוח:
+                    <input type="text" name="client" required />
+                </label>
+                <div className={styles.oneInRow}>
+                    <label>
+                        תיאור:
+                        <textarea
+                            name="description"
+                            id="description"
+                            rows="4"
+                        ></textarea>
+                    </label>
+                </div>
+                <label>
+                    שעת התחלה:
+                    <input type="time" name="start_time" required />
+                </label>
+                <label>
+                    שעת סיום:
+                    <input type="time" name="end_time" required />
+                </label>
+                <label>
+                    נקודת יציאה:
+                    <Autocomplete
+                        onPlaceSelected={handleStartPointSelect}
+                        onLoad={(autocomplete) =>
+                            autocomplete.setFields([
+                                "place_id",
+                                "formatted_address",
+                            ])
+                        }
+                    >
+                        <input
+                            type="text"
+                            value={startPoint}
+                            onChange={handleStartPointChange}
+                        />
+                    </Autocomplete>
+                </label>
+                <label>
+                    נקודת יעד:
+                    <Autocomplete
+                        onPlaceSelected={handleEndPointSelect}
+                        onLoad={(autocomplete) =>
+                            autocomplete.setFields([
+                                "place_id",
+                                "formatted_address",
+                            ])
+                        }
+                    >
+                        <input
+                            type="text"
+                            value={endPoint}
+                            onChange={handleEndPointChange}
+                        />
+                    </Autocomplete>
+                </label>
+                <label>
+                    קילומטרים:
+                    <input
+                        type="number"
+                        name="kilometers"
+                        required
+                        value={kilometers}
+                        readOnly
+                    />
+                </label>
+                <label>
+                    מחיר:
+                    <input type="number" name="price" required />
+                </label>
+                <label>
+                    מחיר הדלק לליטר:
+                    <input
+                        type="number"
+                        step={0.01}
+                        name="fuelPrice"
+                        required
+                        defaultValue={props?.fuelPrice}
+                        onChange={(e) => props.handleFuelPrice(e.target.value)}
+                    />
+                </label>
+                <button type="submit">הוספת נסיעה לטבלה</button>
+            </form>
+        </LoadScript>
     );
 };
 
 export default AddDriveForm;
+
+
