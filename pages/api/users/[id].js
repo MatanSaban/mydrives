@@ -15,7 +15,6 @@ export default async function handler(req, res) {
     const { method } = req;
     switch (method) {
         case "GET":
-            console.log(req.query);
             if (req.query.email) {
                 getUserByEmail(req, res);
             } else if (req.query.id) {

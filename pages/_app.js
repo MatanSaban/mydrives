@@ -31,24 +31,18 @@ function MyApp({ Component, pageProps }) {
 
 
     useEffect(() => {
-        console.log("_app.js useeffect runs");
         const token = Cookies.get("token");
         const userId = Cookies.get("userId");
-        // console.log("token");
-        // console.log(token);
         if (token && !isLoggedIn) {
             axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             setIsLoggedIn(true);
             axios
                 .get(`/api/users/${userId}`)
                 .then((response) => {
-                    console.log('response app js')
-                    console.log(response)
                     setUserData(response.data.user);
                     setIsLoggedIn(true);
                 })
                 .catch((error) => {
-                    console.log(error);
                 });
         }
     }, [userData]);
@@ -59,7 +53,6 @@ function MyApp({ Component, pageProps }) {
         setShowPopup(
             <Popup content={content} handlePopup={handlePopup} show={bool} />
         );
-		console.log("asd");
     };
     
 
@@ -88,8 +81,6 @@ function MyApp({ Component, pageProps }) {
     const forbiddenPages = ['/my-account', '/my-drives']
 
     useEffect(() => {
-        console.log('router');
-        console.log(router);
         forbiddenPages.forEach((slug) => {
             if (!isLoggedIn) {
                 if (slug === router.asPath) {
@@ -108,7 +99,18 @@ function MyApp({ Component, pageProps }) {
             }
         })
     },[router])
+useEffect(() => {
+    const intervalId = setInterval(() => {
+        const closeButton = document.querySelector('.gm-ui-hover-effect');
 
+        if (closeButton) {
+            closeButton.style.boxShadow = 'none !important';
+            clearInterval(intervalId);
+        }
+    }, 100);
+
+    return () => clearInterval(intervalId); // cleanup on unmount
+}, []);
 
     return (
         <LoadScript

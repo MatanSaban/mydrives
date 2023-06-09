@@ -18,7 +18,6 @@ const MyAccount = (props) => {
     const handleForm = (e) => {
         e.preventDefault();
         const form = e;
-        console.log(form);
         props.handlePopup(
             true, 
             <>
@@ -28,7 +27,6 @@ const MyAccount = (props) => {
         );
             try {
                 axios.put(`/api/users/${props?.userData?._id}`, myAccDetails).then((res) => {
-                    console.log(res)
                     if (res.status === 200) {
                         props.handlePopup(true, <>
                         <h3>השינויים נשמרו בהצלחה!</h3>

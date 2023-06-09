@@ -59,7 +59,6 @@ const Register = (props) => {
                     props.handlePopup(false, "");
                 }, 5000);
             } else {
-                console.log(error);
             }
         }
     };

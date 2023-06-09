@@ -4,6 +4,9 @@
     position: relative;
     padding-bottom: 75px;
     margin-bottom: 25px;
+    max-width: 70%;
+    margin-right: auto;
+    margin-left: auto;
     button {
         margin: 0 auto;
         position: absolute;
@@ -18,6 +21,7 @@
             padding: 10px;
             border: none;
             box-shadow: 0 0 5px #00000050;
+            resize: vertical;
         }
     }
     label {
@@ -25,9 +29,16 @@
         flex-direction: column;
         margin: 0 10px;
         position: relative;
+        text-align: right;
+        white-space: nowrap;
+        button.addPointButton {
+            display: block;
+            position: relative;
+        }
         input,
         input[type="date"],
-        input[type="time"] {
+        input[type="time"],
+        textarea {
             padding: 5px;
             border-radius: 50px;
             border: none;
@@ -36,7 +47,58 @@
             width: 100%; // Optional: You can set the width to 100% to make all inputs the same width
             margin: 0 auto;
             -webkit-appearance: none; // For WebKit-based browsers
+            max-width: -webkit-fill-available;
         }
+    }
+
+    .pointLabelsWrapper {
+        width: 100%;
+        grid-column: 1 / span 2; // Span the full width of the grid
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 20px;
+        .pointLabels {
+            width: 100%;
+            .smallButton.centerButton {
+                margin: 20px 0;
+            }
+        }
+    }
+    .addPointButton {
+        position: relative;
+        font-size: 14px;
+        margin: 20px auto;
+        left: 0%;
+        transform: translateX(0%);
+    }
+    .mapLabel {
+        position: relative;
+        max-width: 100%;
+        min-width: 98%;
+        > div {
+            width: 100%;
+            .mapInputWrapper {
+                display: flex;
+                position: relative;
+            }
+        }
+        .stopInputWrapper {
+            .mapInputWrapper {
+                display: flex;
+                position: relative;
+                margin-bottom: 20px;
+            }
+        }
+    }
+    .smallButton {
+        left: -1px;
+        top: 0;
+        font-size: 14px;
+        position: relative;
+        box-shadow: none;
+        transform: translateX(0);
     }
 }
 @media only screen and (max-width: 767px) {

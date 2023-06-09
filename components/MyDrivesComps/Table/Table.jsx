@@ -7,13 +7,11 @@ import TableRow from "./TableRow";
 
 
 const Table = (props) => {
-    console.log("Table data received: ", props.data);
 
 
 const [editRowState, setEditRowState] = useState();
 
     const handleEditSave = (item, e) => {
-        // console.log(e);
         let popupContent = 
         <>
             <h3>מעדכן את הנסיעה</h3>
@@ -31,7 +29,6 @@ const [editRowState, setEditRowState] = useState();
             axios.put(`/api/users/${props.userData._id}`, {
                 drives: newData
             }).then((res) => {
-                // console.log(res)
                 if (res.status === 200) {
                     let popupContent = (
                         <>
@@ -58,7 +55,6 @@ const [editRowState, setEditRowState] = useState();
                 }
             })
         } catch (error) {
-            // console.log(error)
         }
     };
 
@@ -78,7 +74,6 @@ const [editRowState, setEditRowState] = useState();
 
 
     const handleDelete = (row, clientName) => {
-        // console.log("handleDelete");
         const oldData = props?.userData?.drives;
         const rowId = row.id;
         // Remove the item with the specified ID
@@ -86,7 +81,6 @@ const [editRowState, setEditRowState] = useState();
         axios.put(`/api/users/${props.userData._id}`, {
             drives: newData
         }).then((res) => {
-            // console.log(res);
             if (res.status == 200) {
                 const currentBgColor = row.style.backgroundColor;
                 props.handlePopup(false,"")
@@ -118,7 +112,6 @@ const [editRowState, setEditRowState] = useState();
             const action = span.getAttribute("action");
             switch (action) {
                 case "delete":
-                    // console.log("do delete stuff");
                     const popupContent = (row) => {
                         const client = row.querySelector('div[data="client"]');
                         return (
@@ -134,7 +127,6 @@ const [editRowState, setEditRowState] = useState();
                     props.handlePopup(true, popupContent(row));
                     break;
                 case "edit":
-                    // console.log("do edit stuff");
                     handleEdit(item, row);
                     break;
                 default:

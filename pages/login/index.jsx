@@ -11,15 +11,13 @@ const Login = (props) => {
         e.preventDefault();
         const userEmail = e.target[0].value;
         const password = e.target[1].value;
-
+        
         axios
             .post(`/api/login`, {
                 email: userEmail,
                 password: password,
             })
             .then((res) => {
-                console.log("res from login");
-                console.log(res);
                 const token = res.data.token;
                 const userData = res.data.user;
                 Cookies.set("token", token);

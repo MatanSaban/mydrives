@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import HeaderStyles from "./header.module.scss";
 import Link from "next/link";
 const Header = (props) => {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState();
 
     return (
         <>

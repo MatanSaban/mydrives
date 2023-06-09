@@ -1,6 +1,6 @@
 $bg-color: #ffedb1;
 $font-family: "assistant";
-
+    
 body {
     background-color: $bg-color;
     font-family: $font-family;
@@ -35,6 +35,8 @@ body {
             color: white;
         }
     }
+    
+
     form,
     input,
     select,
@@ -43,7 +45,11 @@ body {
         font-family: $font-family;
         outline: none;
     }
+    .pac-container {
+        z-index: 9999;
+    }
 }
+
 /* Set the width of the scrollbar */
 body::-webkit-scrollbar {
     width: 5px;
@@ -86,3 +92,6 @@ body::-moz-scrollbar-track {
     background-color: #ffefb8;
     border-radius: 20px;
 }
+// #map .gm-style-iw .gm-ui-hover-effect { // google maps api close button
+//       box-shadow: none !important;
+//     }
