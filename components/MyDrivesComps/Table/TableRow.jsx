@@ -20,16 +20,26 @@ const TableRow = (props) => {
           <div data={"description"} className={styles.cell}>
               <button
                   onClick={() =>
-                      props.handleDescription(props.item.client, props.item.description)
+                      props.handleDescription(
+                          props.item.client,
+                          props.item.description,
+                          props.item.startPoint,
+                          props.item.stops,
+                          props.item.endPoint
+                      )
                   }
               >
                   הצגת תיאור
               </button>
           </div>
           <div className={`${styles.cell} ${styles.column}`}>
-              <div data={"fuelPrice"}>{props.item.fuelPrice} ₪</div>
+              <div data={"fuelPrice"}>
+                  {parseFloat(props.item.fuelPrice).toFixed(2)} ₪
+              </div>
               <hr />
-              <div data={"kilometers"}>{props.item.kilometers} ק&quot;מ</div>
+              <div data={"kilometers"}>
+                  {props.item.kilometers.toFixed(2)} ק&quot;מ
+              </div>
               <hr />
               <div data={"fuelConsumption"}>
                   {(

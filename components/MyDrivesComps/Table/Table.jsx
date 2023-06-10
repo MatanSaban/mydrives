@@ -4,18 +4,17 @@ import TableFooter from "./TableFooter";
 import axios from "axios";
 import EditRow from "./EditRow";
 import TableRow from "./TableRow";
-
+import { AiFillHtml5 } from "react-icons/ai";
 
 const Table = (props) => {
-
-
-const [editRowState, setEditRowState] = useState();
+    const [editRowState, setEditRowState] = useState();
 
     const handleEditSave = (item, e) => {
-        let popupContent = 
-        <>
-            <h3>מעדכן את הנסיעה</h3>
-        </>;
+        let popupContent = (
+            <>
+                <h3>מעדכן את הנסיעה</h3>
+            </>
+        );
         props.handlePopup(true, popupContent);
         const oldData = props?.userData?.drives;
         const newData = oldData.map((oldItem) => {
@@ -26,39 +25,36 @@ const [editRowState, setEditRowState] = useState();
             }
         });
         try {
-            axios.put(`/api/users/${props.userData._id}`, {
-                drives: newData
-            }).then((res) => {
-                if (res.status === 200) {
-                    let popupContent = (
-                        <>
-                            <h3>שומר את הנסיעה</h3>
-                        </>
-                    );
-                    props.handlePopup(true, popupContent);
-                    props.handleUserData(res.data);
-                    setTimeout(() => {
-                        props.handlePopup(false, popupContent);
-                        popupContent = (
+            axios
+                .put(`/api/users/${props.userData._id}`, {
+                    drives: newData,
+                })
+                .then((res) => {
+                    if (res.status === 200) {
+                        let popupContent = (
                             <>
                                 <h3>שומר את הנסיעה</h3>
                             </>
                         );
                         props.handlePopup(true, popupContent);
-                        setEditRowState();
-                    }, 1000);
-                    setTimeout(() => {
-                        props.handlePopup(false, popupContent);
-                        
-                    }, 2000);
-                    
-                }
-            })
-        } catch (error) {
-        }
+                        props.handleUserData(res.data);
+                        setTimeout(() => {
+                            props.handlePopup(false, popupContent);
+                            popupContent = (
+                                <>
+                                    <h3>שומר את הנסיעה</h3>
+                                </>
+                            );
+                            props.handlePopup(true, popupContent);
+                            setEditRowState();
+                        }, 1000);
+                        setTimeout(() => {
+                            props.handlePopup(false, popupContent);
+                        }, 2000);
+                    }
+                });
+        } catch (error) {}
     };
-
-    
 
     const handleEdit = (itemData, row) => {
         const EditRowComp = (
@@ -72,37 +68,45 @@ const [editRowState, setEditRowState] = useState();
         setEditRowState(row.id);
     };
 
-
     const handleDelete = (row, clientName) => {
         const oldData = props?.userData?.drives;
         const rowId = row.id;
         // Remove the item with the specified ID
         const newData = oldData.filter((item) => item.id !== rowId);
-        axios.put(`/api/users/${props.userData._id}`, {
-            drives: newData
-        }).then((res) => {
-            if (res.status == 200) {
-                const currentBgColor = row.style.backgroundColor;
-                props.handlePopup(false,"")
-                setTimeout(() => {
-                    props.handlePopup(true,<><h3>הנסיעה של {clientName} נמחקה בהצלחה</h3></>)
-                }, 1000);
-                setTimeout(() => {
-                    props.handlePopup(false,<><h3>הנסיעה של {clientName} נמחקה בהצלחה</h3></>)
-                }, 2000);
-                setTimeout(() => {
-                    row.style.backgroundColor = "#ff4d4d85";
+        axios
+            .put(`/api/users/${props.userData._id}`, {
+                drives: newData,
+            })
+            .then((res) => {
+                if (res.status == 200) {
+                    const currentBgColor = row.style.backgroundColor;
+                    props.handlePopup(false, "");
                     setTimeout(() => {
-                        row.style.backgroundColor = currentBgColor;
-                        props.handleUserData(res.data);
+                        props.handlePopup(
+                            true,
+                            <>
+                                <h3>הנסיעה של {clientName} נמחקה בהצלחה</h3>
+                            </>
+                        );
                     }, 1000);
-                }, 3000);
-            }
-        })
+                    setTimeout(() => {
+                        props.handlePopup(
+                            false,
+                            <>
+                                <h3>הנסיעה של {clientName} נמחקה בהצלחה</h3>
+                            </>
+                        );
+                    }, 2000);
+                    setTimeout(() => {
+                        row.style.backgroundColor = "#ff4d4d85";
+                        setTimeout(() => {
+                            row.style.backgroundColor = currentBgColor;
+                            props.handleUserData(res.data);
+                        }, 1000);
+                    }, 3000);
+                }
+            });
     };
-
-    
-
 
     const handleClick = (e, item) => {
         const span = e.target.closest("span");
@@ -116,10 +120,32 @@ const [editRowState, setEditRowState] = useState();
                         const client = row.querySelector('div[data="client"]');
                         return (
                             <div>
-                                <h3> האם ברצונך למחוק את {client.innerText} ?</h3>
-                                <div style={{ display: "flex", justifyContent: "space-between",}}>
-                                    <button onClick={() => handleDelete(row, client.innerText)}> כן</button>
-                                    <button onClick={() => props.handlePopup(false, null)}> לא </button>
+                                <h3>
+                                    {" "}
+                                    האם ברצונך למחוק את {client.innerText} ?
+                                </h3>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <button
+                                        onClick={() =>
+                                            handleDelete(row, client.innerText)
+                                        }
+                                    >
+                                        {" "}
+                                        כן
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            props.handlePopup(false, null)
+                                        }
+                                    >
+                                        {" "}
+                                        לא{" "}
+                                    </button>
                                 </div>
                             </div>
                         );
@@ -134,7 +160,6 @@ const [editRowState, setEditRowState] = useState();
             }
         }
     };
-
 
     const sortedData = props?.data?.sort((a, b) => {
         if (a.date < b.date) {
@@ -161,18 +186,40 @@ const [editRowState, setEditRowState] = useState();
         return newDateFormat;
     };
 
+    const handleDescription = (
+        client,
+        description,
+        startPoint,
+        stops,
+        endPoint
+    ) => {
+        props.handlePopup(
+            true,
+            <div className={styles.descriptionPopupContent}>
+                <h3>לקוח: {client}, תיאור הנסיעה : </h3>
+                <p>{description}</p>
+                <h4>פירוט הנסיעה: </h4>
+                <p>
+                    <h5>נקודת התחלה : {startPoint}</h5>
 
-const handleDescription = (client, description) => {
-    props.handlePopup(
-        true,
-        <>
-            <h3>לקוח: {client}, תיאור הנסיעה</h3>
-            <p>{description}</p>
-        </>
-    );
-}
+                    {stops.length > 0 && <h5>נקודות עצירה : </h5>}
+                    {stops.length > 0 && (
+                        <ol>
+                            {stops.map((stop) => {
+                                return (
+                                    <>
+                                        <li>{stop}</li>
+                                    </>
+                                );
+                            })}
+                        </ol>
+                    )}
 
-
+                    <h5>נקודת סיום : {endPoint}</h5>
+                </p>
+            </div>
+        );
+    };
 
     return (
         <div className={styles.table}>

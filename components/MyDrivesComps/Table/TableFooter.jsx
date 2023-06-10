@@ -46,11 +46,7 @@ const TableFooter = (props) => {
             <div className={`${styles.footerCell} ${styles.summary}`}>
                 {totalKilometers?.toFixed(2)} קילומטרים
             </div>
-            {/* <div
-                className={`${styles.footerCell} ${styles.fuelPrice} ${styles.summary}`}
-            >
-                <label htmlFor="fuelPrice">מחיר דלק: {props?.fuelPrice}₪</label>
-            </div> */}
+            
             <div className={`${styles.footerCell} ${styles.summary}`}>
                 דלק: ₪{totalFuelExpense?.toFixed(2)}
             </div>

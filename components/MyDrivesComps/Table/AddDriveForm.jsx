@@ -11,7 +11,6 @@ const AddDriveForm = (props) => {
     const [estDriveTime, setEstDriveTime] = useState("");
     const [mapVisible, setMapVisible] = useState(false);
     const [focusedInput, setFocusedInput] = useState(null);
-    const [selectedLocation, setSelectedLocation] = useState(null);
     const [stops, setStops] = useState([]);
     const [stopLocations, setStopLocations] = useState([]);
 
@@ -41,19 +40,11 @@ const AddDriveForm = (props) => {
     const handleStartPointChange = (e) => {
         const value = e.target.value;
         setStartPoint(value);
-
-        // Reset the stops and stopLocations when startPoint changes
-        setStops([]);
-        setStopLocations([]);
     };
 
     const handleEndPointChange = (e) => {
         const value = e.target.value;
         setEndPoint(value);
-
-        // Reset the stops and stopLocations when endPoint changes
-        setStops([]);
-        setStopLocations([]);
     };
 
     const handleStartPointSelect = async (place) => {
@@ -222,17 +213,6 @@ const AddDriveForm = (props) => {
         return hebrewValue;
     };
 
-    const currentDate = (divided) => {
-        const date = new Date();
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const year = date.getFullYear();
-        if (divided) {
-            return { day: day, month: parseInt(month), year: year };
-        } else {
-            return `${day}/${month}/${year}`;
-        }
-    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -245,7 +225,9 @@ const AddDriveForm = (props) => {
             price: parseInt(event.target.price.value),
             date: event.target.date.value,
             fuelPrice: event.target.fuelPrice.value,
+            startPoint: startPoint,
             stops: stopLocations,
+            endPoint: endPoint,
             id: uuidv4(),
         };
         props.onAddDrive(drive);
@@ -350,13 +332,19 @@ const AddDriveForm = (props) => {
                 </label>
                 <label>
                     לקוח:
-                    <input type="text" name="client" required placeholder="שם הלקוח" />
+                    <input
+                        type="text"
+                        name="client"
+                        required
+                        placeholder="שם הלקוח"
+                    />
                 </label>
                 <div className={styles.oneInRow}>
                     <label>
                         תיאור:
                         <textarea
-                            name="description"ייר
+                            name="description"
+                            ייר
                             id="description"
                             rows="4"
                         ></textarea>
@@ -514,7 +502,7 @@ const AddDriveForm = (props) => {
                         type="number"
                         name="kilometers"
                         required
-                        value={kilometers}
+                        value={kilometers.toFixed(2)}
                         readOnly
                     />
                 </label>
