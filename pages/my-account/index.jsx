@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import Hero from "../../components/HeroComp/Hero";
 import styles from "./myaccount.module.scss";
 import axios from "axios";
+import LicensePlateSearch from "../../components/LicensePlateSearch/LicensePlateSearch";
 
 const MyAccount = (props) => {
     const [myAccDetails, setMyAccDetails] = useState();
     const [vehicleIdNumber, setVehicleIdNumber] = useState("");
+    const [vehicle, setVehicle] = useState();
+    const [showVehicleFinder, setShowVehicleFinder] = useState(false);
 
     useEffect(() => {
         const userData = props?.userData;
@@ -48,39 +51,27 @@ const MyAccount = (props) => {
     };
 
     const searchByVehicleId = (num) => {
-
-
-        let data = {
-            resource_id: '053cea08-09bc-40ec-8f7a-156f0677aff3',
-            q: num
-        };
-
-        axios.post('https://data.gov.il/api/3/action/datastore_search', {
-            params: data,
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
+        try {
+            axios
+            .get(`/api/licenceplates/${num}`)
             .then(function (response) {
-                alert('Total results found: ' + response.data.result.total);
+                setVehicle(response.data);
             })
-            .catch(function (error) {
-                console.error(error);
-            });
-
+        } catch (error) {
+            console.log(error);            
+        }
     }
+
+    const handleSetVehicle = (value) => {
+        setVehicle(value);
+    };
 
     const handleSearchByVehicleId = () => {
-        props.handlePopup(true,
-            <div>
-                <h3>חיפוש לפי מספר רישוי</h3>
-                <p>יש להזין את מספר הרישוי של רכבך וללחוץ על חיפוש, ואנו ננסה למצוא אותו</p>
-                <input type="number" name="vehicleId" id="vehicleId" onBlur={(e) => searchByVehicleId(e.target.value)} />
-                <button>חיפוש</button>
-            </div>
-        );
+        
     }
+
+
+    
 
     return (
         <div className={styles.main}>
@@ -146,12 +137,36 @@ const MyAccount = (props) => {
                 <h3>הרכבים שלי</h3>
                 <p>כאן מוצגים הרכבים שהוספת למערכת</p>
                 <div className={styles.addCar}>
-                    <button className={styles.addCarBtn} onClick={() => props.handlePopup(true,
-                        <div className={styles.chooseCarAddMethod}>
-                            <button onClick={() => handleSearchByVehicleId()}>חיפוש לפי מס&apos; רישוי</button>
-                            <button>הוספת רכב ידנית</button>
-                        </div>
-                    )}>הוספת רכב</button>
+                    <button
+                        className={styles.addCarBtn}
+                        onClick={() =>
+                            props.handlePopup(
+                                true,
+                                <div className={styles.chooseCarAddMethod}>
+                                    <button
+                                        onClick={() =>
+                                            {setShowVehicleFinder(true);
+                                            props.handlePopup(false)}
+                                        }
+                                    >
+                                        חיפוש לפי מס&apos; רישוי
+                                    </button>
+                                    <button>הוספת רכב ידנית</button>
+                                </div>
+                            )
+                        }
+                    >
+                        הוספת רכב
+                    </button>
+                    {
+                       showVehicleFinder && <LicensePlateSearch
+                    searchByVehicleId={searchByVehicleId}
+                    vehicleIdNumber={vehicleIdNumber}
+                    vehicle={vehicle}
+                    setVehicle={handleSetVehicle}
+                    handlePopup={props.handlePopup}
+                />
+                    }
                 </div>
             </div>
         </div>
