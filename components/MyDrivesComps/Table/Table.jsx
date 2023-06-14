@@ -53,7 +53,7 @@ const Table = (props) => {
                         }, 2000);
                     }
                 });
-        } catch (error) {}
+        } catch (error) { }
     };
 
     const handleEdit = (itemData, row) => {
@@ -223,7 +223,7 @@ const Table = (props) => {
 
     return (
         <div className={styles.table}>
-            <div className={`${styles.row} ${styles.header}`}>
+            {/* <div className={`${styles.row} ${styles.header}`}>
                 <div className={styles.cell}>תאריך</div>
                 <div className={styles.cell}>לקוח</div>
                 <div className={`${styles.cell} ${styles.column}`}>
@@ -245,7 +245,7 @@ const Table = (props) => {
                     <span>רווח</span>
                 </div>
                 <div className={styles.cell}>עריכה / מחיקה</div>
-            </div>
+            </div> */}
 
             {sortedData?.map((item, index) =>
                 editRowState && editRowState == item.id ? (
@@ -259,9 +259,11 @@ const Table = (props) => {
                     <TableRow
                         item={item}
                         key={index}
+                        index={index + 1}
                         dateFormatter={dateFormatter}
                         handleDescription={handleDescription}
                         handleClick={handleClick}
+                        handlePopup={props.handlePopup}
                     />
                 )
             )}

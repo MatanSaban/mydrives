@@ -95,7 +95,7 @@ const AddDriveForm = (props) => {
                     (response, status) => {
                         if (
                             status ===
-                                window.google.maps.DistanceMatrixStatus.OK &&
+                            window.google.maps.DistanceMatrixStatus.OK &&
                             response?.rows[0]?.elements[0]?.distance &&
                             response?.rows[0]?.elements[0]?.duration
                         ) {
@@ -136,8 +136,8 @@ const AddDriveForm = (props) => {
                         (response, status) => {
                             if (
                                 status ===
-                                    window.google.maps.DistanceMatrixStatus
-                                        .OK &&
+                                window.google.maps.DistanceMatrixStatus
+                                    .OK &&
                                 response?.rows[0]?.elements[0]?.distance &&
                                 response?.rows[0]?.elements[0]?.duration
                             ) {
@@ -220,6 +220,7 @@ const AddDriveForm = (props) => {
             client: event.target.client.value,
             startTime: event.target.start_time.value,
             endTime: event.target.end_time.value,
+            estimatedDrivingTime: event.target.estimatedDrivingTime.value,
             description: event.target.description.value,
             kilometers: kilometers,
             price: parseInt(event.target.price.value),
@@ -513,6 +514,7 @@ const AddDriveForm = (props) => {
                         name="estimatedDrivingTime"
                         required
                         defaultValue={estDriveTime}
+                        onChange={(e) => setEstDriveTime(e.target.value)}
                         readOnly
                     />
                 </label>

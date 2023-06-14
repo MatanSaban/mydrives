@@ -29,11 +29,11 @@ const MyDay = (props) => {
           );
         case "myWeek":
           const startOfWeek = new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                today.getDate() - 6
-            );
-            return driveDate >= startOfWeek && driveDate <= today;
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate() - 6
+          );
+          return driveDate >= startOfWeek && driveDate <= today;
         case "myMonth":
           return (
             driveDate.getMonth() === today.getMonth() &&
@@ -85,6 +85,7 @@ const MyDay = (props) => {
   };
 
   const isDriveWithinFilters = (driveData) => {
+    const today = new Date();
     const driveDate = new Date(driveData.date);
 
     if (customDates) {
@@ -101,28 +102,28 @@ const MyDay = (props) => {
     }
 
     switch (selectedRange) {
-        case "myDay":
-            return (
-                driveDate.getDate() === new Date().getDate() &&
-                driveDate.getMonth() === new Date().getMonth() &&
-                driveDate.getFullYear() === new Date().getFullYear()
-            );
-        case "myWeek":
-            const startOfWeek = new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                today.getDate() - 6
-            );
-            return driveDate >= startOfWeek && driveDate <= today;
-        case "myMonth":
-            return (
-                driveDate.getMonth() === new Date().getMonth() &&
-                driveDate.getFullYear() === new Date().getFullYear()
-            );
-        case "myAllTimes":
-            return true;
-        default:
-            return true;
+      case "myDay":
+        return (
+          driveDate.getDate() === new Date().getDate() &&
+          driveDate.getMonth() === new Date().getMonth() &&
+          driveDate.getFullYear() === new Date().getFullYear()
+        );
+      case "myWeek":
+        const startOfWeek = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate() - 6
+        );
+        return driveDate >= startOfWeek && driveDate <= today;
+      case "myMonth":
+        return (
+          driveDate.getMonth() === new Date().getMonth() &&
+          driveDate.getFullYear() === new Date().getFullYear()
+        );
+      case "myAllTimes":
+        return true;
+      default:
+        return true;
     }
   };
 

@@ -1,227 +1,340 @@
 .table {
-    border-collapse: collapse;
-    width: 70%;
-    margin: 0 auto;
-    box-shadow: 0 0 10px #00000040;
-    border-radius: 20px;
+  // border-collapse: collapse;
+  width: 60%;
+  margin: 0 auto;
+  // box-shadow: 0 0 10px #00000040;
+  // border-radius: 20px;
+  .driveItem {
+    display: flex;
+    width: 100%;
+    margin: 10px 0;
+    position: relative;
+    .driveNumber {
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      background: #000000;
+      z-index: 1;
+      text-shadow: 0 0 BLACK;
+      line-height: 1;
+      transform: translate(25%, -15%);
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    &:hover {
+      .driveNumber {
+        background: white;
+        color: black;
+      }
+    }
     .row {
+      display: grid;
+      grid-template-columns: 50% 30%;
+      justify-content: center;
+      border: 1px solid #ddd;
+      background-color: #fed039;
+      border-radius: 0 20px 20px 0;
+      position: relative;
+      width: 90%;
+      .right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-around;
+        text-align: right;
+        margin: 10px;
+        .stops {
+          button {
+            font-size: inherit;
+            padding: 0px 10px;
+          }
+        }
+      }
+      .left {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-around;
+        text-align: right;
+        margin: 10px;
+        .data_row {
+          margin: 10px 0;
+          button {
+            font-size: inherit;
+            padding: 0px 10px;
+            width: max-content;
+            margin: 0;
+          }
+        }
+        .priceAndProfit.data_row {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          > div:first-child {
+            margin-left: 10px;
+          }
+        }
+      }
+
+      // &:nth-child(even) {
+      //   background-color: #fff0bf;
+      // }
+
+      &:hover {
+        background-color: #6e5500;
+        color: #fff;
+      }
+    }
+    .actionButtons {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 10%;
+      .action_button {
+        border-radius: 20px 0 0 20px;
         border: 1px solid #ddd;
-        display: flex;
         background-color: #fed039;
-        justify-content: space-around;
-
-        &:nth-child(even) {
-            background-color: #fff0bf;
-        }
-
-        &:hover {
-            background-color: #6e5500;
-            color: #fff;
-        }
-    }
-    .row.header {
-        justify-content: space-around;
-        border-radius: 20px 20px 0 0;
-        border: none;
-        .cell {
-            font-weight: 600;
-            width: fit-content;
-            justify-content: flex-start;
-        }
-        .cell.column {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            > span {
-                margin: 0;
-            }
-        }
-    }
-
-    .row {
-        border: none;
-        form {
-            display: flex;
-            width: 100%;
-            justify-content: space-around;
-        }
-        .cell {
-            padding: 4px 0;
-            flex: 1;
-            text-align: right;
-            display: flex;
-            max-width: 105px;
-            justify-content: flex-start;
-            align-items: flex-start;
-            width: fit-content;
-            height: fit-content;
-            position: relative;
-            input,
-            textarea {
-                width: 80%;
-                border-radius: 10px;
-                border: none;
-                outline: none;
-            }
-            span {
-                margin: 0 10px;
-                svg {
-                    cursor: pointer;
-                    margin: 5px 0;
-                }
-            }
-            hr {
-                width: 15%;
-                margin: 2px 0 2px auto;
-                height: 2px;
-                background-color: black;
-                border: none;
-            }
-            button {
-                font-size: inherit;
-                padding: 5px 10px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
-        .cell.column {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    }
-
-    .header-cell {
-        background-color: #f2f2f2;
-        font-weight: bold;
-    }
-    .footer {
+        height: 33%;
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 0px;
-        background-color: #000000;
+        align-items: center;
+        justify-content: flex-start;
         color: white;
-        font-size: 18px;
-        border-radius: 0 0 20px 20px;
-
-        .footerCell {
-            font-weight: 600;
-            text-align: center;
-            flex: 1;
-            padding: 4px;
-            margin: 10px;
-            max-width: fit-content;
+        cursor: pointer;
+        opacity: 0.8;
+        text-shadow: 0 0 10px black;
+        transition: all 0.3s ease;
+        &:hover {
+          opacity: 1;
         }
-        .fuelPrice {
-            display: flex;
-            label {
-                margin-left: 2.5px;
-            }
-            input {
-                width: 50px;
-                height: fit-content;
-            }
+        svg {
+          text-shadow: 0 0 10px black;
+          margin: 0 5px;
         }
-        .summary {
-            text-align: center;
-            padding: 8px 0;
-        }
+      }
+      .edit {
+        background-color: orange;
+      }
+      .duplicate {
+        background-color: #2ec22e;
+      }
+      .delete {
+        background-color: red;
+      }
     }
+  }
+  .row.header {
+    justify-content: space-around;
+    border-radius: 20px 20px 0 0;
+    border: none;
+    .cell {
+      font-weight: 600;
+      width: fit-content;
+      justify-content: flex-start;
+    }
+    .cell.column {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      > span {
+        margin: 0;
+      }
+    }
+  }
+
+  .row {
+    border: none;
+    form {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+    }
+    .cell {
+      padding: 4px 0;
+      flex: 1;
+      text-align: right;
+      display: flex;
+      max-width: 105px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: fit-content;
+      height: fit-content;
+      position: relative;
+      input,
+      textarea {
+        width: 80%;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+      }
+      span {
+        margin: 0 10px;
+        svg {
+          cursor: pointer;
+          margin: 5px 0;
+        }
+      }
+      hr {
+        width: 15%;
+        margin: 2px 0 2px auto;
+        height: 2px;
+        background-color: black;
+        border: none;
+      }
+      button {
+        font-size: inherit;
+        padding: 5px 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+    .cell.column {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      height: auto;
+      justify-content: space-around;
+    }
+  }
+
+  .header-cell {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0px;
+    background-color: #000000;
+    color: white;
+    font-size: 18px;
+    border-radius: 0 0 20px 20px;
+
+    .footerCell {
+      font-weight: 600;
+      text-align: center;
+      flex: 1;
+      padding: 4px;
+      margin: 10px;
+      max-width: fit-content;
+    }
+    .fuelPrice {
+      display: flex;
+      label {
+        margin-left: 2.5px;
+      }
+      input {
+        width: 50px;
+        height: fit-content;
+      }
+    }
+    .summary {
+      text-align: center;
+      padding: 8px 0;
+    }
+  }
 }
 
 @media only screen and (max-width: 1023px) {
-    .table {
-        border-collapse: collapse;
-        width: 100%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2509803922);
+  .table {
+    border-collapse: collapse;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2509803922);
+    border-radius: 0;
+    .header {
+      .row {
+        justify-content: space-around;
         border-radius: 0;
-        .header {
-            .row {
-                justify-content: space-around;
-                border-radius: 0;
-                border: none;
-                .cell {
-                    width: fit-content;
-                    justify-content: center;
-                }
-                .cell.column {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-            }
+        border: none;
+        .cell {
+          width: fit-content;
+          justify-content: center;
         }
-        .row.header {
-            border-radius: 0;
+        .cell.column {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
         }
-        .row {
-            justify-content: space-around;
-            overflow-wrap: anywhere;
-            .cell {
-                padding: 4px 0;
-                flex: 1 1;
-                text-align: right;
-                display: flex;
-                max-width: 105px;
-                justify-content: flex-start;
-                align-items: flex-start;
-                height: fit-content;
-                margin-right: 3px;
-                button {
-                    border-radius: 5px;
-                    font-size: 14px;
-                    margin: 10px 0 10px 10px;
-                    padding: 0;
-                }
-                hr {
-                    height: 2px;
-                    background-color: black;
-                    width: 10px;
-                    margin: 2px 0 2px auto;
-                }
-            }
-            .cell.column {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
-            .cell[data="action"] {
-                flex-direction: column;
-                justify-content: space-around !important;
-                align-items: center;
-                /* align-content: center; */
-                display: flex;
-            }
-        }
-        .footer {
-            align-items: center;
-            flex-direction: column;
-            .footerCell {
-                font-size: 16px;
-            }
-        }
+      }
     }
+    .row.header {
+      border-radius: 0;
+    }
+    .row {
+      justify-content: space-around;
+      overflow-wrap: anywhere;
+      .cell {
+        padding: 4px 0;
+        flex: 1 1;
+        text-align: right;
+        display: flex;
+        max-width: 105px;
+        justify-content: flex-start;
+        align-items: flex-start;
+        height: fit-content;
+        margin-right: 3px;
+        button {
+          border-radius: 5px;
+          font-size: 14px;
+          margin: 10px 0 10px 10px;
+          padding: 0;
+        }
+        hr {
+          height: 2px;
+          background-color: black;
+          width: 10px;
+          margin: 2px 0 2px auto;
+        }
+      }
+      .cell.column {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+      .cell[data="action"] {
+        flex-direction: column;
+        justify-content: space-around !important;
+        align-items: center;
+        /* align-content: center; */
+        display: flex;
+      }
+    }
+    .footer {
+      align-items: center;
+      flex-direction: column;
+      .footerCell {
+        font-size: 16px;
+      }
+    }
+  }
 }
 
 @media only screen and ((min-width: 1024px) and (max-width: 1279px)) {
-    // laptop
-    .table {
-        width: 100%;
-    }
+  // laptop
+  .table {
+    width: 100%;
+  }
 }
 
 @media only screen and ((min-width: 768px) and (max-width: 1023px)) {
-    // tablet
-    .table {
-        width: 100%;
-    }
+  // tablet
+  .table {
+    width: 100%;
+  }
 }
 .descriptionPopupContent {
-    ol {
-        margin: 10px 0;
-    }
+  ol {
+    margin: 10px 0;
+  }
 }
