@@ -5,6 +5,7 @@ import axios from "axios";
 
 const MyAccount = (props) => {
     const [myAccDetails, setMyAccDetails] = useState();
+    const [vehicleIdNumber, setVehicleIdNumber] = useState("");
 
     useEffect(() => {
         const userData = props?.userData;
@@ -19,32 +20,67 @@ const MyAccount = (props) => {
         e.preventDefault();
         const form = e;
         props.handlePopup(
-            true, 
+            true,
             <>
                 <h3>מאמת את הטופס</h3>
                 <p>בודק שהכל בסדר עם הטופס...</p>
             </>
         );
-            try {
-                axios.put(`/api/users/${props?.userData?._id}`, myAccDetails).then((res) => {
-                    if (res.status === 200) {
-                        props.handlePopup(true, <>
+        try {
+            axios.put(`/api/users/${props?.userData?._id}`, myAccDetails).then((res) => {
+                if (res.status === 200) {
+                    props.handlePopup(true, <>
                         <h3>השינויים נשמרו בהצלחה!</h3>
-                        </>)
-                        setTimeout(() => {
-                            props.handlePopup(false)
-                        }, 1000);
-                    }
-                })
-            } catch (error) {
-                
-            }
+                    </>)
+                    setTimeout(() => {
+                        props.handlePopup(false)
+                    }, 1000);
+                }
+            })
+        } catch (error) {
+
+        }
     };
 
     const handleFields = (e) => {
         const { name, value } = e.target;
         setMyAccDetails({ ...myAccDetails, [name]: value });
     };
+
+    const searchByVehicleId = (num) => {
+
+
+        let data = {
+            resource_id: '053cea08-09bc-40ec-8f7a-156f0677aff3',
+            q: num
+        };
+
+        axios.post('https://data.gov.il/api/3/action/datastore_search', {
+            params: data,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(function (response) {
+                alert('Total results found: ' + response.data.result.total);
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+
+    }
+
+    const handleSearchByVehicleId = () => {
+        props.handlePopup(true,
+            <div>
+                <h3>חיפוש לפי מספר רישוי</h3>
+                <p>יש להזין את מספר הרישוי של רכבך וללחוץ על חיפוש, ואנו ננסה למצוא אותו</p>
+                <input type="number" name="vehicleId" id="vehicleId" onBlur={(e) => searchByVehicleId(e.target.value)} />
+                <button>חיפוש</button>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.main}>
@@ -104,6 +140,18 @@ const MyAccount = (props) => {
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div className={styles.myCars}>
+                <h3>הרכבים שלי</h3>
+                <p>כאן מוצגים הרכבים שהוספת למערכת</p>
+                <div className={styles.addCar}>
+                    <button className={styles.addCarBtn} onClick={() => props.handlePopup(true,
+                        <div className={styles.chooseCarAddMethod}>
+                            <button onClick={() => handleSearchByVehicleId()}>חיפוש לפי מס&apos; רישוי</button>
+                            <button>הוספת רכב ידנית</button>
+                        </div>
+                    )}>הוספת רכב</button>
                 </div>
             </div>
         </div>

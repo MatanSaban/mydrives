@@ -1,68 +1,76 @@
 .main {
-    min-height: 73.6vh;
-    p {
-        text-align: center;
+  min-height: 73.6vh;
+  p {
+    text-align: center;
+  }
+  .formWrapper {
+    text-align: center;
+    h3 {
+      text-align: center;
     }
-    .formWrapper {
-        text-align: center;
-        h3 {
-            text-align: center;
-        }
-        form {
-            width: 500px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            margin: 0 auto;
+    form {
+      width: 500px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      margin: 0 auto;
 
-            .inputWrapper {
-                margin: 10px auto;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                position: relative;
-                label {
-                    text-align: right;
-                    width: 100%;
-                    margin-bottom: 5px;
-                }
-                input {
-                    padding: 8px 20px;
-                    border: none;
-                    border-radius: 20px;
-                    min-width: 180px;
-                }
-            }
-            .buttonWrapper {
-                grid-column: 1 / -1;
-                display: flex;
-                justify-content: center;
-                .submitButton {
-                    margin: 20px auto;
-                    text-align: center;
-                }
-            }
+      .inputWrapper {
+        margin: 10px auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        label {
+          text-align: right;
+          width: 100%;
+          margin-bottom: 5px;
         }
+        input {
+          padding: 8px 20px;
+          border: none;
+          border-radius: 20px;
+          min-width: 180px;
+        }
+      }
+      .buttonWrapper {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: center;
+        .submitButton {
+          margin: 20px auto;
+          text-align: center;
+        }
+      }
     }
+  }
+  .myCars {
+    // display: flex;
+    // justify-content: center;
+    text-align: center;
+    h3 {
+      text-align: center;
+    }
+  }
 }
 @media only screen and (max-width: 767px) {
-    .main {
-        min-height: 73.5vh;
-        p {
-            text-align: center;
-        }
-        .formWrapper {
-            position: relative;
-            width: 100vw;
-            form {
-                max-width: 100%;
-                // grid-template-columns: repeat(1, 1fr);
-                .inputWrapper {
-                    input {
-                        padding: 8px 10px;
-                        min-width: 160px;
-                    }
-                }
-            }
-        }
+  .main {
+    min-height: 73.5vh;
+    p {
+      text-align: center;
     }
+    .formWrapper {
+      position: relative;
+      width: 100vw;
+      form {
+        max-width: 100%;
+        // grid-template-columns: repeat(1, 1fr);
+        .inputWrapper {
+          input {
+            padding: 8px 10px;
+            min-width: 160px;
+          }
+        }
+      }
+    }
+  }
 }
