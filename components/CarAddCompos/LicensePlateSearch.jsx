@@ -1,45 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from "../../pages/my-account/myaccount.module.scss";
-import axios from 'axios';
-
+import { israeliDate } from '../../functions/functions';
 
 const LicensePlateSearch = (props) => {
 
     const [loader, setLoader] = useState(false);
-
-    const israeliDate = (dateString) => {
-        // let parts = dateString?.split("-");
-        // let newDate;
-        // if (parts) {
-        //     if (parts[2]) {
-        //         newDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
-        //     } else if (!parts[2]) {
-        //         newDate = `${parts[1]}/${parts[0]}`;
-        //     } else if (!parts[0]) {
-        //         newDate = `${parts[2]}/${parts[1]}`;
-        //     }
-        // }
-
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-
-        let formattedDate = '';
-
-        if (isNaN(year) || isNaN(month) || isNaN(day)) {
-            // Invalid date format
-            return formattedDate;
-        }
-
-        if (day === 1) {
-            formattedDate = `${month}/${year}`;
-        } else {
-            formattedDate = `${day}/${month}/${year}`;
-        }
-
-        return formattedDate;
-    };
 
     const addToVehicles = (data) => {
         props.addToVehiclesCB(data);
