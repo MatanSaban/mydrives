@@ -3,6 +3,18 @@
   p {
     text-align: center;
   }
+  .myAccountContentWrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+    margin: 0 auto;
+    > div {
+      width: 50%;
+      border: 1px solid black;
+      border-radius: 10px;
+      margin: 0 10px;
+    }
+  }
   .formWrapper {
     text-align: center;
     h3 {
@@ -50,6 +62,65 @@
     h3 {
       text-align: center;
     }
+  }
+}
+.carFindOptions {
+  display: flex;
+  justify-content: space-around;
+  .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    button.success {
+      background-color: #94d137;
+    }
+    strong {
+      margin-bottom: 10px;
+    }
+  }
+}
+.centered {
+  justify-content: center;
+  text-align: center;
+}
+.licensePlate {
+  width: 40%;
+  margin: 0 auto 20px auto;
+  background-color: yellow;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  height: 50px;
+  img {
+    object-fit: contain;
+    height: 100% !important;
+    max-height: 100% !important;
+    width: 27px;
+  }
+  > span {
+    width: 27px !important;
+    max-height: 100%;
+    > span {
+      max-height: 100%;
+    }
+  }
+  .numbers {
+    font-size: 40px;
+    font-weight: bold;
+    width: 100% !important;
+  }
+  .delete {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, -50%);
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1;
   }
 }
 @media only screen and (max-width: 767px) {
