@@ -18,54 +18,54 @@ const LicensePlateSearch = (props) => {
                     <div>
                         <h3>
                             הרכב שנמצא תחת מספר &quot;
-                            {props.vehicle.records[0].mispar_rechev}&quot;
+                            {props?.vehicle?.records[0]?.mispar_rechev}&quot;
                         </h3>
-                        {props.vehicle.records[0].tozeret_nm && <p className={styles.brandName}>
+                        {props?.vehicle?.records[0]?.tozeret_nm && <p className={styles.brandName}>
                             <strong>מותג :</strong>{" "}
-                            <span>{props.vehicle.records[0].tozeret_nm}</span>
+                            <span>{props?.vehicle?.records[0]?.tozeret_nm}</span>
                         </p>}
-                        {props.vehicle.records[0].kinuy_mishari && <p className={styles.carName}>
+                        {props?.vehicle?.records[0]?.kinuy_mishari && <p className={styles.carName}>
                             <strong>שם רכב :</strong>{" "}
-                            <span>{props.vehicle.records[0].kinuy_mishari}</span>
+                            <span>{props?.vehicle?.records[0]?.kinuy_mishari}</span>
                         </p>}
-                        {props.vehicle.records[0].degem_nm && <p className={styles.carName}>
+                        {props?.vehicle?.records[0]?.degem_nm && <p className={styles.carName}>
                             <strong>מספר דגם :</strong>{" "}
-                            <span>{props.vehicle.records[0].degem_nm}</span>
+                            <span>{props?.vehicle?.records[0]?.degem_nm}</span>
                         </p>}
-                        {props.vehicle.records[0].ramat_gimur && <p className={styles.carName}>
+                        {props?.vehicle?.records[0]?.ramat_gimur && <p className={styles.carName}>
                             <strong>דגם :</strong>{" "}
-                            <span>{props.vehicle.records[0].ramat_gimur}</span>
+                            <span>{props?.vehicle?.records[0]?.ramat_gimur}</span>
                         </p>}
-                        {props.vehicle.records[0].shnat_yitzur && <p className={styles.year}>
+                        {props?.vehicle?.records[0]?.shnat_yitzur && <p className={styles.year}>
                             <strong>שנת ייצור :</strong>{" "}
-                            <span>{props.vehicle.records[0].shnat_yitzur}</span>
+                            <span>{props?.vehicle?.records[0]?.shnat_yitzur}</span>
                         </p>}
-                        {props.vehicle.records[0].tzeva_rechev && <p className={styles.color}>
+                        {props?.vehicle?.records[0]?.tzeva_rechev && <p className={styles.color}>
                             <strong>צבע :</strong>{" "}
-                            <span>{props.vehicle.records[0].tzeva_rechev}</span>
+                            <span>{props?.vehicle?.records[0]?.tzeva_rechev}</span>
                         </p>}
-                        {props.vehicle.records[0].moed_aliya_lakvish && <p className={styles.roadStarted}>
+                        {props?.vehicle?.records[0]?.moed_aliya_lakvish && <p className={styles.roadStarted}>
                             <strong>עלייה לכביש :</strong>{" "}
                             <span>
                                 {israeliDate(
-                                    props.vehicle.records[0].moed_aliya_lakvish
+                                    props?.vehicle?.records[0]?.moed_aliya_lakvish
                                 )}
                             </span>
                         </p>}
-                        {props.vehicle.records[0].kvutzat_sug_rechev
+                        {props?.vehicle?.records[0]?.kvutzat_sug_rechev
                             && <p className={styles.color}>
                                 <strong>סוג רכב :</strong>{" "}
-                                <span>{props.vehicle.records[0].kvutzat_sug_rechev
+                                <span>{props?.vehicle?.records[0]?.kvutzat_sug_rechev
                                 }</span>
                             </p>}
-                        {props.vehicle.records[0].nefach_manoa && <p className={styles.color}>
+                        {props?.vehicle?.records[0]?.nefach_manoa && <p className={styles.color}>
                             <strong>נפח מנוע :</strong>{" "}
-                            <span>{props.vehicle.records[0].nefach_manoa}</span>
+                            <span>{props?.vehicle?.records[0]?.nefach_manoa}</span>
                         </p>}
-                        {props.vehicle.records[0].tokef_dt && <p className={styles.carLicence}>
+                        {props?.vehicle?.records[0]?.tokef_dt && <p className={styles.carLicence}>
                             <strong>תוקף רישיון רכב :</strong>{" "}
                             <span>
-                                {israeliDate(props.vehicle.records[0].tokef_dt)}
+                                {israeliDate(props?.vehicle?.records[0]?.tokef_dt)}
                             </span>
                         </p>}
                         <div className={styles.carFindOptions}>
@@ -106,13 +106,26 @@ const LicensePlateSearch = (props) => {
                 id="vehicleId"
                 onChange={(e) => props.handleSearchByVehicleId(e.target.value)}
             />
-            <button onClick={() => {
-                setLoader("מחפשים את הרכב שלך");
-                props.searchByVehicleId(props.vehicleIdNumber);
-            }}>חיפוש</button>
-            {
-                loader
-            }
+            <button
+                className={`${
+                    props.vehicleIdNumber.toString().length == 7 ||
+                    props.vehicleIdNumber.toString().length == 8
+                        ? styles.enabled
+                        : styles.disabled
+                }`}
+                disabled={
+                    props.vehicleIdNumber.toString().length == 7 ||
+                    props.vehicleIdNumber.toString().length == 8
+                        ? false
+                        : true
+                }
+                onClick={() => {
+                    props.searchByVehicleId(props.vehicleIdNumber);
+                }}
+            >
+                חיפוש
+            </button>
+            {props.isResults}
         </div>
     );
 }

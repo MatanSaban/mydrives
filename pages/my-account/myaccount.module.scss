@@ -95,6 +95,20 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
+    label {
+      font-weight: bold;
+      text-align: right;
+    }
+    input {
+      border-radius: 10px;
+      border: 1px solid rgb(196, 196, 196);
+      padding-right: 5px;
+      color: black;
+      font-weight: 600;
+      &::placeholder {
+        color: rgb(157, 157, 157);
+      }
+    }
   }
   button {
     margin-top: 20px;
@@ -168,7 +182,7 @@
             font-weight: 400;
             text-align: center;
             width: 100%;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             font-family: fantasy;
         }
         .imageWrapper {
@@ -183,6 +197,9 @@
             }
         }
     }
+}
+.disabled {
+  opacity: 0.5 !important;
 }
 @media only screen and (max-width: 767px) {
     .main {

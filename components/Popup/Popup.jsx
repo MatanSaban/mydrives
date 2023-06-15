@@ -25,7 +25,7 @@ export default function Popup(props) {
                     }`}
                     onClick={(e) => e.stopPropagation()} 
                 >
-                    <i onClick={() => props.handlePopup(false, props.content)}><AiOutlineClose/></i>
+                    <i onClick={() => props.handlePopup(false)}><AiOutlineClose/></i>
                     {showContent && (
                         <div className={styles.popupContent}>
                             {props.content}

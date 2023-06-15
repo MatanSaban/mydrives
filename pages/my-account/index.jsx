@@ -17,6 +17,7 @@ const MyAccount = (props) => {
     const [showVehicleFinder, setShowVehicleFinder] = useState(false);
     const [showVehicleBuilder, setShowVehicleBuilder] = useState(false);
     const [isResults, setIsResults] = useState();
+    const [userCars, setUserCars] = useState(props?.userData?.cars);
 
     useEffect(() => {
         const userData = props?.userData;
@@ -25,6 +26,7 @@ const MyAccount = (props) => {
             lastname: userData?.lastname,
             email: userData?.email,
         });
+        setUserCars(props?.userData?.cars);
     }, [props?.userData]);
 
     const handleForm = (e) => {
@@ -62,12 +64,21 @@ const MyAccount = (props) => {
     };
 
     const searchByVehicleId = (num) => {
-        axios.get(`/api/licenceplates/${num}`).then(function (response) {
-            if (response?.data?.records?.length > 0) {
-                console.log(response.data);
-                setVehicle(response.data);
-                setIsResults(true);
-                return response.data;
+        axios.get(`/api/licenceplates/${num}`).then((res) => {
+            if (res.status === 200) {
+                if (res.data == "no results") {
+                    setIsResults("לא מצאנו את הרכב שלך");
+                    return "לא מצאנו את הרכב שלך";
+                }
+                if (res?.data?.records?.length > 0) {
+                    console.log(res.data);
+                    setVehicle(res.data);
+                    setIsResults(true);
+                    return res.data;
+                } else {
+                    setIsResults(false);
+                    return "לא מצאנו את הרכב שלך";
+                }
             } else {
                 setIsResults(false);
                 return "לא מצאנו את הרכב שלך";
@@ -84,9 +95,8 @@ const MyAccount = (props) => {
     };
 
     const addToVehiclesCB = (data) => {
-        console.log(data);
         let cars = props?.userData?.cars;
-        if (props?.userData?.cars) {
+        if (props?.userData?.cars?.length > 0) {
             cars = [...props?.userData?.cars, data];
         } else {
             cars = [data];
@@ -121,6 +131,7 @@ const MyAccount = (props) => {
                 console.log("res");
                 console.log(res);
                 if (res.status === 200) {
+                    setUserCars(res?.data?.cars);
                     props.handleUserData(res.data);
                     props.handlePopup(false);
                 }
@@ -219,69 +230,187 @@ const MyAccount = (props) => {
         );
     };
 
+    
+
+    const handleCarInputs = (e, carItem) => {
+        const { name, value } = e.target;
+        let exist = false;
+        let newCars = userCars;
+
+        newCars.forEach((car) => {
+            if ( car.records[0].mispar_rechev === carItem.records[0].mispar_rechev) {
+                car.records[0][name] = value;
+                exist = true;
+            }
+        });
+        if (!exist) {
+            console.log("not exist blat");
+        }
+
+        setUserCars(newCars);
+        const newUserData = props?.userData;
+        newUserData.cars = newCars;
+        props.handleUserData(newUserData);
+    };
+
+    const handleCarSave = (e) => {
+        props.handlePopup(true, <h3>שומר את השינויים...</h3>);
+        e.preventDefault();
+        axios
+            .put(`/api/users/${props?.userData?._id}`, {
+                cars: props?.userData?.cars
+            })
+            .then((res) => {
+                if (res.status === 200) {
+                    props.handleUserData(res.data);
+                    props.handlePopup(
+                        true,
+                        <h3>העדכונים נשמרו, חלון זה ייסגר מיד</h3>
+                    );
+                    setTimeout(() => {
+                        props.handlePopup(
+                            false,
+                            <h3>העדכונים נשמרו, חלון זה ייסגר מיד</h3>
+                        );
+                    }, 1000);
+                } else {
+                    props.handlePopup(
+                        true,
+                        <h3>העדכונים לא נשמרו, נא לרענן את הדף ולנסות שוב.</h3>
+                    );
+                    setTimeout(() => {
+                        props.handlePopup(
+                            false,
+                            <h3>
+                                העדכונים לא נשמרו, נא לרענן את הדף ולנסות שוב.
+                            </h3>
+                        );
+                    }, 1500);
+                }
+            });
+    }
+
     const editCar = (car) => {
         props.handlePopup(
             true,
             <div className={styles.editLicenseWrapper}>
                 <h3>עריכת רכב</h3>
-                <div className={styles.editLicenseFields}>
-                    <p>מספר רכב</p>
+                <form
+                    onSubmit={(e) => handleCarSave(e)}
+                    className={styles.editLicenseFields}
+                >
+                    <label htmlFor="mispar_rechev">מספר רכב</label>
                     <input
-                        type="text"
+                        type="number"
+                        name="mispar_rechev"
+                        id="mispar_rechev"
+                        maxLength={8}
+                        minLength={7}
+                        required
                         defaultValue={car?.records[0]?.mispar_rechev}
+                        placeholder="XXX-XX-XXX או XX-XXX-XX"
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                    <p>ארץ ייצור</p>
+                    <label htmlFor="tozeret_nm">יצרן</label>
                     <input
                         type="text"
+                        name="tozeret_nm"
+                        id="tozeret_nm"
                         defaultValue={car?.records[0]?.tozeret_nm}
+                        placeholder="מאזדה יפן"
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                    <p>שם רכב</p>
+                    <label htmlFor="kinuy_mishari">שם רכב</label>
                     <input
                         type="text"
+                        name="kinuy_mishari"
+                        id="kinuy_mishari"
                         defaultValue={car?.records[0]?.kinuy_mishari}
+                        placeholder="מאזדה 3"
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                    <p>דגם</p>
+                    <label htmlFor="degem_nm">מזהה דגם</label>
                     <input
                         type="text"
+                        name="degem_nm"
+                        id="degem_nm"
                         defaultValue={car?.records[0]?.degem_nm}
+                        placeholder="מזהה דגם"
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                    <p>רמת גימור</p>
+                    <label htmlFor="ramat_gimur">רמת גימור</label>
                     <input
                         type="text"
+                        name="ramat_gimur"
+                        id="ramat_gimur"
                         defaultValue={car?.records[0]?.ramat_gimur}
+                        placeholder="SPIRIT"
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                    <p>שנת ייצור</p>
+                    <label htmlFor="shnat_yitzur">שנת ייצור</label>
                     <input
-                        type="text"
+                        type="number"
+                        name="shnat_yitzur"
+                        id="shnat_yitzur"
                         defaultValue={car?.records[0]?.shnat_yitzur}
+                        placeholder="2023"
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                    <p>צבע רכב</p>
+                    <label htmlFor="tzeva_rechev">צבע רכב</label>
                     <input
                         type="text"
+                        name="tzeva_rechev"
+                        id="tzeva_rechev"
                         defaultValue={car?.records[0]?.tzeva_rechev}
+                        placeholder="כסף מטאלי"
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                    <p>מועד עלייה לכביש</p>
+                    <label htmlFor="moed_aliya_lakvish">מועד עלייה לכביש</label>
                     <input
                         type="text"
+                        name="moed_aliya_lakvish"
+                        id="moed_aliya_lakvish"
                         defaultValue={car?.records[0]?.moed_aliya_lakvish}
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                    <p>סוג רכב</p>
+                    <label htmlFor="tokef_dt">תוקף רישיון רכב</label>
                     <input
-                        type="text"
-                        defaultValue={car?.records[0]?.kvutzat_sug_rechev}
-                    />
-                    <p>נפח מנוע</p>
-                    <input
-                        type="text"
-                        defaultValue={car?.records[0]?.nefach_manoa}
-                    />
-                    <p>תוקף רישיון רכב</p>
-                    <input
-                        type="text"
+                        type="date"
+                        name="tokef_dt"
+                        id="tokef_dt"
                         defaultValue={car?.records[0]?.tokef_dt}
+                        onChange={(e) => handleCarInputs(e, car)}
                     />
-                </div>
-                <button>שמירה</button>
+                    <label htmlFor="kvutzat_sug_rechev">סוג רכב</label>
+                    <input
+                        type="text"
+                        name="kvutzat_sug_rechev"
+                        id="kvutzat_sug_rechev"
+                        defaultValue={car?.records[0]?.kvutzat_sug_rechev}
+                        placeholder="אוטובוס / מיניבוס / טיולית.."
+                        onChange={(e) => handleCarInputs(e, car)}
+                    />
+                    <label htmlFor="nefach_manoa">נפח מנוע</label>
+                    <input
+                        type="text"
+                        name="nefach_manoa"
+                        id="nefach_manoa"
+                        defaultValue={car?.records[0]?.nefach_manoa}
+                        onChange={(e) => handleCarInputs(e, car)}
+                    />
+                    <label htmlFor="tzrichat_delek">
+                        צריכת דלק ל-1 ק&quot;מ (משולב)
+                    </label>
+                    <input
+                        type="number"
+                        name="tzrichat_delek"
+                        id="tzrichat_delek"
+                        placeholder="11"
+                        defaultValue={car?.records[0]?.tzrichat_delek}
+                        onChange={(e) => handleCarInputs(e, car)}
+                    />
+                    <button type="submit">שמירה</button>
+                </form>
             </div>
         );
     }
@@ -417,9 +546,9 @@ const MyAccount = (props) => {
                     )}
                     {props?.userData?.cars?.map((car) => {
                         return (
-                            <div key={car.records[0].mispar_rechev}>
+                            <div key={car?.records[0]?.mispar_rechev}>
                                 {generateLicensePlate(
-                                    car.records[0].mispar_rechev,
+                                    car?.records[0]?.mispar_rechev,
                                     car
                                 )}
                             </div>
@@ -438,7 +567,9 @@ const MyAccount = (props) => {
                         <button
                             className={styles.addCarBtn}
                             onClick={() => {
-                                setShowVehicleBuilder(!showVehicleBuilder);
+                                // setShowVehicleBuilder(!showVehicleBuilder);
+                                setUserCars([...userCars, {}]);
+                                editCar(null);
                                 setShowVehicleFinder(false);
                             }}
                         >

@@ -51,7 +51,7 @@ function MyApp({ Component, pageProps }) {
 
     const handlePopup = (bool, content) => {
         setShowPopup(
-            <Popup content={content} handlePopup={handlePopup} show={bool} />
+            <Popup content={bool ? content : null} handlePopup={handlePopup} show={bool} />
         );
     };
     
