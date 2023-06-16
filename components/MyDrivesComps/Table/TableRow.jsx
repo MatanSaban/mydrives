@@ -19,7 +19,7 @@ const print_stops = (stops) => {
 
 const TableRow = (props) => {
     return (
-        <div className={`${styles.driveItem} driveItem`}>
+        <div id={props.item.id} className={`${styles.driveItem} driveItem`}>
             <span className={styles.driveNumber}>{props?.index}</span>
             <div id={props.item.id} className={`${styles.row} row`}>
                 <div className={styles.right}>
@@ -146,7 +146,7 @@ const TableRow = (props) => {
                 <span
                     className={`${styles.action_button} ${styles.duplicate}`}
                     action="duplicate"
-                    onClick={(e) => props.handleClick(e)}
+                    onClick={(e) => props.handleClick(e, props.item)}
                 >
                     <HiOutlineDocumentDuplicate />
                     שכפול
@@ -154,7 +154,7 @@ const TableRow = (props) => {
                 <span
                     className={`${styles.action_button} ${styles.delete} action_button`}
                     action="delete"
-                    onClick={(e) => props.handleClick(e)}
+                    onClick={(e) => props.handleClick(e, props.item)}
                 >
                     <BsTrash />
                     מחיקה

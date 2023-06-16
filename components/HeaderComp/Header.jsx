@@ -25,7 +25,7 @@ const Header = (props) => {
                     style={props.isMobileDevice ? { width: "50%" } : {}}
                     onClick={() => setMobileMenuOpen(false)}
                 >
-                    <Link href={"/"}>מחשבון ההסעות שלי</Link>
+                    <Link href={"/"}>RoadMaster</Link>
                 </div>
                 <div className={HeaderStyles.mainMenu}>
                     {props.isMobileDevice && (

@@ -626,6 +626,7 @@ const AddDriveForm = (props) => {
                     מחיר:
                     <input
                         type="number"
+                        step={0.01}
                         name="price"
                         required
                         defaultValue={props?.itemData?.price}

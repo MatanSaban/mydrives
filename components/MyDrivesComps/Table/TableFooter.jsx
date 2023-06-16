@@ -6,18 +6,18 @@ const TableFooter = (props) => {
 
     // Calculate the total price, number of drives, and total kilometers of all drives
     const totalProfit = data?.reduce(
-        (sum, item) => sum + parseInt(item.price),
+        (sum, item) => sum + parseFloat(item.price),
         0
     );
     const totalFuelExpense = data?.reduce(
         (sum, item) =>
-            sum + ((item.kilometers / 17.6) * parseInt(item.fuelPrice)),
+            sum + (item.kilometers / 17.6) * parseFloat(item.fuelPrice),
         0
     );
 
     const numDrives = data?.length;
     const totalKilometers = data?.reduce(
-        (sum, item) => sum + parseInt(item.kilometers),
+        (sum, item) => sum + parseFloat(item.kilometers),
         0
     );
 
@@ -46,12 +46,12 @@ const TableFooter = (props) => {
             <div className={`${styles.footerCell} ${styles.summary}`}>
                 {totalKilometers?.toFixed(2)} קילומטרים
             </div>
-            
+
             <div className={`${styles.footerCell} ${styles.summary}`}>
                 דלק: ₪{totalFuelExpense?.toFixed(2)}
             </div>
             <div className={`${styles.footerCell} ${styles.summary}`}>
-                הכנסות: ₪{parseInt(totalProfit)?.toFixed(2)}
+                הכנסות: ₪{parseFloat(totalProfit)?.toFixed(2)}
             </div>
             <div className={`${styles.footerCell} ${styles.summary}`}>
                 רווח : ₪{(totalProfit - totalFuelExpense).toFixed(2)}

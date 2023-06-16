@@ -6,6 +6,8 @@ import EditRow from "./EditRow";
 import TableRow from "./TableRow";
 import { AiFillHtml5 } from "react-icons/ai";
 import AddDriveForm from "./AddDriveForm";
+import { v4 as uuidv4 } from "uuid";
+
 
 const Table = (props) => {
     const [editRowState, setEditRowState] = useState();
@@ -74,18 +76,19 @@ const Table = (props) => {
         setEditRowState(row.id);
     };
 
-    const handleDelete = (row, clientName) => {
+    const handleDelete = (driveItem, clientName) => {
         const oldData = props?.userData?.drives;
-        const rowId = row.id;
+        const driveId = driveItem.id;
         // Remove the item with the specified ID
-        const newData = oldData.filter((item) => item.id !== rowId);
+        const newData = oldData.filter((item) => item.id !== driveId);
         axios
             .put(`/api/users/${props.userData._id}`, {
                 drives: newData,
             })
             .then((res) => {
                 if (res.status == 200) {
-                    const currentBgColor = row.style.backgroundColor;
+                    const currentBgColor =
+                        driveItem.querySelector(".row").style.backgroundColor;
                     props.handlePopup(false, "");
                     setTimeout(() => {
                         props.handlePopup(
@@ -94,7 +97,7 @@ const Table = (props) => {
                                 <h3>הנסיעה של {clientName} נמחקה בהצלחה</h3>
                             </>
                         );
-                    }, 1000);
+                    }, 500);
                     setTimeout(() => {
                         props.handlePopup(
                             false,
@@ -102,23 +105,44 @@ const Table = (props) => {
                                 <h3>הנסיעה של {clientName} נמחקה בהצלחה</h3>
                             </>
                         );
-                    }, 2000);
+                    }, 1500);
                     setTimeout(() => {
-                        row.style.backgroundColor = "#ff4d4d85";
+                        driveItem.querySelector('.row').style.backgroundColor = "#ff4d4d85";
                         setTimeout(() => {
-                            row.style.backgroundColor = currentBgColor;
+                            driveItem.querySelector(
+                                ".row"
+                            ).style.backgroundColor = currentBgColor;
                             props.handleUserData(res.data);
                         }, 1000);
-                    }, 3000);
+                    }, 1000);
                 }
             });
     };
 
+    const handleDuplicate = (itemData) => {
+        props.handlePopup(true, <h3>משכפל נסיעה</h3>);
+        const duplicatedItem = { ...itemData, id: uuidv4() };
+        let newDrives = [...props?.userData?.drives, duplicatedItem];
+        let newUserData = { ...props?.userData, drives: newDrives };
+        axios
+            .put(`/api/users/${props?.userData?._id}`, newUserData)
+            .then((res) => {
+                if (res.status === 200) {
+                    props.handlePopup(true, <h3>הנסיעה שוכפלה בהצלחה</h3>);
+                    props.handleUserData(res.data);
+                    setTimeout(() => {
+                        props.handlePopup(false, <h3>הנסיעה שוכפלה בהצלחה</h3>);
+                    }, 1000);
+                } else {
+                    props.handlePopup(false);
+                }
+            });
+    };
+
+
     const handleClick = (e, item) => {
         const span = e.target
         const row = span.closest("div.driveItem");
-        console.log("span");
-        console.log(span);
         const rowId = row.getAttribute("id");
         if (span) {
             const action = span.getAttribute("action");
@@ -162,6 +186,9 @@ const Table = (props) => {
                     break;
                 case "edit":
                     handleEdit(item, row);
+                    break;
+                case "duplicate":
+                    handleDuplicate(item);
                     break;
                 default:
                     break;
