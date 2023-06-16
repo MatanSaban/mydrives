@@ -7,13 +7,38 @@
     max-width: 70%;
     margin-right: auto;
     margin-left: auto;
-    button {
+    .buttonsWrapper {
+        display: flex;
+        width: 100%;
+        justify-content: center;
         margin: 0 auto;
         position: absolute;
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
+        button {
+            position: relative;
+            &:hover {
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.335);
+                opacity: 0.8;
+            }
+        }
+        .cancelButton {
+            background-color: red;
+            color: white;
+        }
+        .saveButton {
+            background-color: rgb(24, 147, 24);
+            color: white;
+        }
     }
+    // button {
+    //     margin: 0 auto;
+    //     position: absolute;
+    //     bottom: 0;
+    //     left: 50%;
+    //     transform: translateX(-50%);
+    // }
     .oneInRow {
         grid-column: span 2;
         textarea {

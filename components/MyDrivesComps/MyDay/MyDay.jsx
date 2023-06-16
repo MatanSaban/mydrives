@@ -177,58 +177,60 @@ const MyDay = (props) => {
   };
 
   return (
-    <div className={styles.myDay}>
-      <button
-        className={styles.addDriveButton}
-        onClick={() => setShowAddDriveForm(!showAddDriveForm)}
-      >
-        {showAddDriveForm ? "סגירת הוספת נסיעה" : "הוספת נסיעה"}
-      </button>
-      <button className={styles.selectButton} id="selectButton">
-        <select defaultValue={"myDay"} onChange={handleSelectChange}>
-          <option value="myDay">היום שלי</option>
-          <option value="myWeek">השבוע שלי</option>
-          <option value="myMonth">החודש שלי</option>
-          <option value="myAllTimes">כל הזמנים</option>
-          <option value="myCustomDates">לפי תאריכים</option>
-        </select>
-      </button>
-      {customDates && (
-        <div className={styles.betweenDates}>
-          <label htmlFor="fromDate"> מתאריך </label>
-          <input
-            type="date"
-            name="fromDate"
-            id="fromDate"
-            onChange={filterTableByCustomDates}
+      <div className={styles.myDay}>
+          <button
+              className={styles.addDriveButton}
+              onClick={() => setShowAddDriveForm(!showAddDriveForm)}
+          >
+              {showAddDriveForm ? "סגירת הוספת נסיעה" : "הוספת נסיעה"}
+          </button>
+          <button className={styles.selectButton} id="selectButton">
+              <select defaultValue={"myDay"} onChange={handleSelectChange}>
+                  <option value="myDay">היום שלי</option>
+                  <option value="myWeek">השבוע שלי</option>
+                  <option value="myMonth">החודש שלי</option>
+                  <option value="myAllTimes">כל הזמנים</option>
+                  <option value="myCustomDates">לפי תאריכים</option>
+              </select>
+          </button>
+          {customDates && (
+              <div className={styles.betweenDates}>
+                  <label htmlFor="fromDate"> מתאריך </label>
+                  <input
+                      type="date"
+                      name="fromDate"
+                      id="fromDate"
+                      onChange={filterTableByCustomDates}
+                  />
+                  <label htmlFor="untilDate"> עד תאריך </label>
+                  <input
+                      type="date"
+                      name="untilDate"
+                      id="untilDate"
+                      onChange={filterTableByCustomDates}
+                  />
+              </div>
+          )}
+          {showAddDriveForm && (
+              <AddDriveForm
+                  handleFuelPrice={props.handleFuelPrice}
+                  fuelPrice={props?.fuelPrice}
+                  when="today"
+                  onAddDrive={addDrive}
+                  handlePopup={props.handlePopup}
+              />
+          )}
+          <Table
+              when="today"
+              onAddDrive={addDrive}
+              handleFuelPrice={props.handleFuelPrice}
+              fuelPrice={props?.fuelPrice}
+              userData={props?.userData}
+              data={tableData}
+              handlePopup={props.handlePopup}
+              handleUserData={props.handleUserData}
           />
-          <label htmlFor="untilDate"> עד תאריך </label>
-          <input
-            type="date"
-            name="untilDate"
-            id="untilDate"
-            onChange={filterTableByCustomDates}
-          />
-        </div>
-      )}
-      {showAddDriveForm && (
-        <AddDriveForm
-          handleFuelPrice={props.handleFuelPrice}
-          fuelPrice={props?.fuelPrice}
-          when="today"
-          onAddDrive={addDrive}
-          handlePopup={props.handlePopup}
-        />
-      )}
-      <Table
-        handleFuelPrice={props.handleFuelPrice}
-        fuelPrice={props?.fuelPrice}
-        userData={props?.userData}
-        data={tableData}
-        handlePopup={props.handlePopup}
-        handleUserData={props.handleUserData}
-      />
-    </div>
+      </div>
   );
 };
 

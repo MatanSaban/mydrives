@@ -5,14 +5,17 @@ import { LoadScript, Autocomplete } from "@react-google-maps/api";
 import MapPopup from "./MapPopup";
 
 const AddDriveForm = (props) => {
-    const [startPoint, setStartPoint] = useState("");
-    const [endPoint, setEndPoint] = useState("");
+    const [startPoint, setStartPoint] = useState(props?.itemData?.startPoint ? props?.itemData?.startPoint : "");
+    const [endPoint, setEndPoint] = useState(props?.itemData?.endPoint ? props?.itemData?.endPoint : "");
     const [kilometers, setKilometers] = useState(0);
     const [estDriveTime, setEstDriveTime] = useState("");
     const [mapVisible, setMapVisible] = useState(false);
     const [focusedInput, setFocusedInput] = useState(null);
-    const [stops, setStops] = useState([]);
-    const [stopLocations, setStopLocations] = useState([]);
+    const [stops, setStops] = useState(props?.itemData?.stops ? [...props?.itemData?.stops] : []);
+    const [stopLocations, setStopLocations] = useState(props?.itemData?.stops ? [...props?.itemData?.stops] : []);
+    const [driveDate, setDriveDate] = useState();
+
+    const [drive, setDrive] = useState(props?.itemData);
 
     const handleStartFocus = () => {
         setFocusedInput("start");
@@ -95,7 +98,7 @@ const AddDriveForm = (props) => {
                     (response, status) => {
                         if (
                             status ===
-                            window.google.maps.DistanceMatrixStatus.OK &&
+                                window.google.maps.DistanceMatrixStatus.OK &&
                             response?.rows[0]?.elements[0]?.distance &&
                             response?.rows[0]?.elements[0]?.duration
                         ) {
@@ -136,8 +139,8 @@ const AddDriveForm = (props) => {
                         (response, status) => {
                             if (
                                 status ===
-                                window.google.maps.DistanceMatrixStatus
-                                    .OK &&
+                                    window.google.maps.DistanceMatrixStatus
+                                        .OK &&
                                 response?.rows[0]?.elements[0]?.distance &&
                                 response?.rows[0]?.elements[0]?.duration
                             ) {
@@ -213,7 +216,6 @@ const AddDriveForm = (props) => {
         return hebrewValue;
     };
 
-
     const handleSubmit = (event) => {
         event.preventDefault();
         const drive = {
@@ -234,7 +236,7 @@ const AddDriveForm = (props) => {
         props.onAddDrive(drive);
     };
 
-    const [driveDate, setDriveDate] = useState();
+    
 
     const handleDriveDate = (e) => {
         console.log("handleDriveDate");
@@ -268,15 +270,28 @@ const AddDriveForm = (props) => {
         calculateDistanceAndSetValues();
     }, [startPoint, endPoint, stopLocations, stops]); // Include 'stops' in the dependency array
 
-    const handleAddStop = () => {
-        setStops([...stops, ""]); // Add an empty string to the stops state
-        setStopLocations([...stopLocations, ""]); // Add an empty string to the stopLocations state
+    const handleAddStop = (editStart, editStops, editEnd) => {
+        if (editStart && editStops && editEnd) {
+            console.log("editStart && editStops && editEnd");
+            setStops([...stops, ""]); // Add an empty string to the stops state
+            setStopLocations([...stopLocations, ""]); // Add an empty string to the stopLocations state
 
-        // Calculate distance if both startPoint, endPoint, and stops are selected
-        if (startPoint && endPoint && stopLocations.length > 0) {
-            calculateDistance().then((distance) => {
-                setKilometers(distance);
-            });
+            // Calculate distance if both startPoint, endPoint, and stops are selected
+            if (editStart && editEnd && stopLocations.length > 0) {
+                calculateDistance().then((distance) => {
+                    setKilometers(distance);
+                });
+            }
+        } else {
+            setStops([...stops, ""]); // Add an empty string to the stops state
+            setStopLocations([...stopLocations, ""]); // Add an empty string to the stopLocations state
+
+            // Calculate distance if both startPoint, endPoint, and stops are selected
+            if (startPoint && endPoint && stopLocations.length > 0) {
+                calculateDistance().then((distance) => {
+                    setKilometers(distance);
+                });
+            }
         }
     };
 
@@ -318,17 +333,63 @@ const AddDriveForm = (props) => {
         }
     };
 
+    const handleSave = (e) => {
+        e.preventDefault();
+        console.log(e);
+        const newDrive = {
+            ...drive,
+            kilometers: kilometers.toFixed(2),
+            estimatedDrivingTime: estDriveTime,
+        };
+        props.handleEditSave(newDrive, e);
+    };
+
+    const handleCancelEdit = (e) => {
+        e.preventDefault();
+        props.setEditRowState();
+    }
+
+    const handleFields = (e, index) => {
+        if (e.target.name === "stops") {
+            const updatedStops = [...drive.stops];
+            updatedStops[index] = e.target.value;
+            setDrive((prevDrive) => ({
+                ...prevDrive,
+                stops: updatedStops,
+            }));
+        } else {
+            setDrive((prevDrive) => ({
+                ...prevDrive,
+                [e.target.name]: e.target.value,
+            }));
+        }
+    };
+
+
     return (
         <>
-            <form className={styles.addDriveform} onSubmit={handleSubmit}>
+            <h3>{props?.editMode ? "עדכון נסיעה" : "הוספת נסיעה חדשה"}</h3>
+            <form
+                className={styles.addDriveform}
+                onSubmit={(e) =>
+                    props?.editMode ? handleSave(e) : handleSubmit(e)
+                }
+            >
                 <label>
                     תאריך נסיעה:
                     <input
                         type="date"
                         name="date"
                         required
-                        defaultValue={driveDate}
-                        onChange={(e) => handleDriveDate(e)}
+                        defaultValue={
+                            props?.itemData?.date
+                                ? props?.itemData?.date
+                                : driveDate
+                        }
+                        onChange={(e) => {
+                            handleDriveDate(e);
+                            handleFields(e);
+                        }}
                     />
                 </label>
                 <label>
@@ -338,6 +399,8 @@ const AddDriveForm = (props) => {
                         name="client"
                         required
                         placeholder="שם הלקוח"
+                        defaultValue={props?.itemData?.client}
+                        onChange={(e) => handleFields(e)}
                     />
                 </label>
                 <div className={styles.oneInRow}>
@@ -345,19 +408,32 @@ const AddDriveForm = (props) => {
                         תיאור:
                         <textarea
                             name="description"
-                            ייר
                             id="description"
                             rows="4"
+                            defaultValue={props?.itemData?.description}
+                            onChange={(e) => handleFields(e)}
                         ></textarea>
                     </label>
                 </div>
                 <label>
                     שעת התחלה:
-                    <input type="time" name="start_time" required />
+                    <input
+                        type="time"
+                        name="startTime"
+                        required
+                        defaultValue={props?.itemData?.startTime}
+                        onChange={(e) => handleFields(e)}
+                    />
                 </label>
                 <label>
                     שעת סיום:
-                    <input type="time" name="end_time" required />
+                    <input
+                        type="time"
+                        name="endTime"
+                        required
+                        defaultValue={props?.itemData?.endTime}
+                        onChange={(e) => handleFields(e)}
+                    />
                 </label>
                 <div className={styles.pointLabelsWrapper}>
                     <div className={styles.pointLabels}>
@@ -375,13 +451,20 @@ const AddDriveForm = (props) => {
                                 <div className={styles.mapInputWrapper}>
                                     <input
                                         type="text"
-                                        value={startPoint}
-                                        onChange={handleStartPointChange}
-                                        onBlur={handleStartPointChange}
+                                        name="startPoint"
+                                        onChange={(e) => {
+                                            handleStartPointChange(e);
+                                            handleFields(e);
+                                        }}
+                                        onBlur={(e) => {
+                                            handleStartPointChange(e);
+                                            handleFields(e);
+                                        }}
                                         onFocus={() => {
                                             handleStartFocus();
                                         }}
                                         placeholder="הזנת נק' איסוף"
+                                        defaultValue={startPoint}
                                     />
                                     <button
                                         className={styles.smallButton}
@@ -421,19 +504,22 @@ const AddDriveForm = (props) => {
                                             >
                                                 <input
                                                     type="text"
+                                                    name="stops"
                                                     value={location}
-                                                    onChange={(e) =>
+                                                    onChange={(e) => {
                                                         handleStopChange(
                                                             e,
                                                             index
-                                                        )
-                                                    }
-                                                    onBlur={(e) =>
+                                                        );
+                                                        handleFields(e, index);
+                                                    }}
+                                                    onBlur={(e) => {
                                                         handleStopChange(
                                                             e,
                                                             index
-                                                        )
-                                                    }
+                                                        );
+                                                        handleFields(e, index);
+                                                    }}
                                                     placeholder="הזנת נקודת עצירה"
                                                 />
                                                 <button
@@ -453,10 +539,17 @@ const AddDriveForm = (props) => {
                                 ))}
                             </label>
                         )}
+
                         <button
                             className={`${styles.smallButton} ${styles.centerButton}`}
                             type="button"
-                            onClick={() => handleAddStop()}
+                            onClick={() =>
+                                handleAddStop(
+                                    props?.itemData?.startPoint,
+                                    props?.itemData?.stops,
+                                    props?.itemData?.endPoint
+                                )
+                            }
                         >
                             הוסף נקודת עצירה
                         </button>
@@ -475,13 +568,20 @@ const AddDriveForm = (props) => {
                                 <div className={styles.mapInputWrapper}>
                                     <input
                                         type="text"
-                                        value={endPoint}
-                                        onChange={handleEndPointChange}
-                                        onBlur={handleEndPointChange}
+                                        name="endPoint"
+                                        onChange={(e) => {
+                                            handleEndPointChange(e);
+                                            handleFields(e);
+                                        }}
+                                        onBlur={(e) => {
+                                            handleEndPointChange(e);
+                                            handleFields(e);
+                                        }}
                                         onFocus={() => {
                                             handleEndFocus();
                                         }}
                                         placeholder="הזנת נק' יעד"
+                                        defaultValue={endPoint}
                                     />
                                     <button
                                         className={styles.smallButton}
@@ -504,6 +604,7 @@ const AddDriveForm = (props) => {
                         name="kilometers"
                         required
                         value={kilometers.toFixed(2)}
+                        onChange={(e) => handleFields(e)}
                         readOnly
                     />
                 </label>
@@ -513,14 +614,23 @@ const AddDriveForm = (props) => {
                         type="text"
                         name="estimatedDrivingTime"
                         required
-                        defaultValue={estDriveTime}
-                        onChange={(e) => setEstDriveTime(e.target.value)}
+                        value={estDriveTime}
+                        onChange={(e) => {
+                            setEstDriveTime(e.target.value);
+                            handleFields(e);
+                        }}
                         readOnly
                     />
                 </label>
                 <label>
                     מחיר:
-                    <input type="number" name="price" required />
+                    <input
+                        type="number"
+                        name="price"
+                        required
+                        defaultValue={props?.itemData?.price}
+                        onChange={(e) => handleFields(e)}
+                    />
                 </label>
                 <label>
                     מחיר הדלק לליטר:
@@ -529,11 +639,30 @@ const AddDriveForm = (props) => {
                         step={0.01}
                         name="fuelPrice"
                         required
-                        defaultValue={props?.fuelPrice}
-                        onChange={(e) => props.handleFuelPrice(e.target.value)}
+                        defaultValue={
+                            props?.itemData?.fuelPrice
+                                ? props?.itemData?.fuelPrice
+                                : props?.fuelPrice
+                        }
+                        onChange={(e) => {
+                            props.handleFuelPrice(e.target.value);
+                            handleFields(e);
+                        }}
                     />
                 </label>
-                <button type="submit">הוספת נסיעה לטבלה</button>
+                <div className={styles.buttonsWrapper}>
+                    <button className={styles.saveButton} type="submit">
+                        {props?.editMode ? "עדכון הנסיעה" : "הוספת נסיעה לטבלה"}
+                    </button>
+                    {props?.editMode && (
+                        <button
+                            className={styles.cancelButton}
+                            onClick={handleCancelEdit}
+                        >
+                            ביטול עריכת הנסיעה
+                        </button>
+                    )}
+                </div>
             </form>
             {mapVisible &&
                 props.handlePopup(

@@ -5,6 +5,7 @@ import axios from "axios";
 import EditRow from "./EditRow";
 import TableRow from "./TableRow";
 import { AiFillHtml5 } from "react-icons/ai";
+import AddDriveForm from "./AddDriveForm";
 
 const Table = (props) => {
     const [editRowState, setEditRowState] = useState();
@@ -56,12 +57,17 @@ const Table = (props) => {
         } catch (error) { }
     };
 
-    const handleEdit = (itemData, row) => {
+    const handleEdit = (itemData, driveItem) => {
+        const row = driveItem.querySelector(".row");
         const EditRowComp = (
-            <EditRow
+            <AddDriveForm
                 handleEditSave={handleEditSave}
                 oldRow={row}
                 itemData={itemData}
+                handleFuelPrice={props.handleFuelPrice}
+                fuelPrice={props?.fuelPrice}
+                onAddDrive={props.addDrive}
+                handlePopup={props.handlePopup}
             />
         );
         // ReactDOM.render(EditRowComp, row);
@@ -109,8 +115,10 @@ const Table = (props) => {
     };
 
     const handleClick = (e, item) => {
-        const span = e.target.closest("span");
-        const row = span.closest(".row");
+        const span = e.target
+        const row = span.closest("div.driveItem");
+        console.log("span");
+        console.log(span);
         const rowId = row.getAttribute("id");
         if (span) {
             const action = span.getAttribute("action");
@@ -249,11 +257,12 @@ const Table = (props) => {
 
             {sortedData?.map((item, index) =>
                 editRowState && editRowState == item.id ? (
-                    <EditRow
+                    <AddDriveForm
                         handleEditSave={handleEditSave}
-                        // oldRow={row}
+                        editMode={true}
                         key={index}
                         itemData={item}
+                        setEditRowState={setEditRowState}
                     />
                 ) : (
                     <TableRow
