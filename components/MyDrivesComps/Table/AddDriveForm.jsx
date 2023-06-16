@@ -220,8 +220,8 @@ const AddDriveForm = (props) => {
         event.preventDefault();
         const drive = {
             client: event.target.client.value,
-            startTime: event.target.start_time.value,
-            endTime: event.target.end_time.value,
+            startTime: event.target.startTime.value,
+            endTime: event.target.startTime.value,
             estimatedDrivingTime: event.target.estimatedDrivingTime.value,
             description: event.target.description.value,
             kilometers: kilometers,
@@ -350,7 +350,7 @@ const AddDriveForm = (props) => {
     }
 
     const handleFields = (e, index) => {
-        if (e.target.name === "stops") {
+        if (props?.itemData?.stops && e.target.name === "stops" && index) {
             const updatedStops = [...drive.stops];
             updatedStops[index] = e.target.value;
             setDrive((prevDrive) => ({
