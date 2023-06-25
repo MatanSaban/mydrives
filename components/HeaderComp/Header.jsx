@@ -59,6 +59,12 @@ const Header = (props) => {
                             <li>
                                 <Link href="/my-drives">הנסיעות שלי</Link>
                             </li>
+                            <li>
+                                <Link href="/my-cars">הרכבים שלי</Link>
+                            </li>
+                            <li>
+                                <Link href="/my-employees">העובדים שלי</Link>
+                            </li>
                         </ul>
                     )}
                 </div>
