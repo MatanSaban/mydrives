@@ -235,10 +235,14 @@
     flex-direction: row;
     justify-content: space-around;
     padding: 0px;
-    background-color: #000000;
+    background-color: #175502;
     color: white;
     font-size: 18px;
     border-radius: 0 0 20px 20px;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    z-index: 99;
 
     .footerCell {
       font-weight: 600;

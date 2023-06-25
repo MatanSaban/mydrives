@@ -328,6 +328,10 @@ const AddDriveForm = (props) => {
         const updatedStopLocations = [...stopLocations];
         updatedStopLocations[index] = address;
         setStopLocations(updatedStopLocations);
+        setDrive(prevDrive => ({
+            ...prevDrive,
+            stops: updatedStopLocations
+        }));
 
         // Calculate distance if both startPoint, endPoint, and stops are selected
         if (startPoint && endPoint && updatedStopLocations.length > 0) {
@@ -338,14 +342,11 @@ const AddDriveForm = (props) => {
 
     const handleSave = (e) => {
         e.preventDefault();
-        console.log(newDrive);
         const newDrive = {
             ...drive,
             kilometers: kilometers.toFixed(2),
             estimatedDrivingTime: estDriveTime,
         };
-        console.log('newDrive');
-        console.log(newDrive);
         props.handleEditSave(newDrive, e);
     };
 
@@ -355,12 +356,12 @@ const AddDriveForm = (props) => {
     };
 
     const handleFields = (e, index) => {
-        if (props?.itemData?.stops && e.target.name === "stops" && index) {
+        if (e.target.name == "stops" && index >= 0) {
             const updatedStops = [...drive.stops];
             updatedStops[index] = e.target.value;
             setDrive((prevDrive) => ({
                 ...prevDrive,
-                stops: updatedStops,
+                stops: [...updatedStops],
             }));
         } else {
             setDrive((prevDrive) => ({

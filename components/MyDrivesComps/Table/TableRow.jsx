@@ -21,7 +21,7 @@ const TableRow = (props) => {
     return (
         <div id={props.item.id} className={`${styles.driveItem} driveItem`}>
             <span className={styles.driveNumber}>{props?.index}</span>
-            <span className={styles.vehicleId}>{props?.item?.vehicleId}</span>
+            <span className={styles.vehicleId}>{props?.item?.vehicleId ? props?.item?.vehicleId : "לא נבחר רכב לנסיעה זו"}</span>
             <div id={props.item.id} className={`${styles.row} row`}>
                 <div className={styles.right}>
                     <div data={"client"} className={styles.data_row}>
