@@ -55,7 +55,7 @@ const MyAccount = (props) => {
                         }, 1000);
                     }
                 });
-        } catch (error) {}
+        } catch (error) { }
     };
 
     const handleFields = (e) => {
@@ -225,12 +225,12 @@ const MyAccount = (props) => {
                 )}
                 {console.log(car)}
 
-                <button>עריכת הרכב</button>
+                <button onClick={() => editCar(car)}>עריכת הרכב</button>
             </div>
         );
     };
 
-    
+
 
     const handleCarInputs = (e, carItem) => {
         const { name, value } = e.target;
@@ -238,7 +238,7 @@ const MyAccount = (props) => {
         let newCars = userCars;
 
         newCars.forEach((car) => {
-            if ( car.records[0].mispar_rechev === carItem.records[0].mispar_rechev) {
+            if (car.records[0].mispar_rechev === carItem.records[0].mispar_rechev) {
                 car.records[0][name] = value;
                 exist = true;
             }

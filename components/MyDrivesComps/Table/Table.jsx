@@ -258,30 +258,6 @@ const Table = (props) => {
 
     return (
         <div className={styles.table}>
-            {/* <div className={`${styles.row} ${styles.header}`}>
-                <div className={styles.cell}>תאריך</div>
-                <div className={styles.cell}>לקוח</div>
-                <div className={`${styles.cell} ${styles.column}`}>
-                    <span>התחלה</span>
-                    <hr />
-                    <span>סיום</span>
-                </div>
-                <div className={styles.cell}>תיאור הנסיעה</div>
-                <div className={`${styles.cell} ${styles.column}`}>
-                    <span>מחיר ליטר</span>
-                    <hr />
-                    <span>ק&quot;מ</span>
-                    <hr />
-                    <span>צריכת דלק</span>
-                </div>
-                <div className={`${styles.cell} ${styles.column}`}>
-                    <span>מחיר נסיעה</span>
-                    <hr />
-                    <span>רווח</span>
-                </div>
-                <div className={styles.cell}>עריכה / מחיקה</div>
-            </div> */}
-
             {sortedData?.map((item, index) =>
                 editRowState && editRowState == item.id ? (
                     <AddDriveForm

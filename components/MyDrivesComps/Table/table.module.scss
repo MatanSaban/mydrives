@@ -9,7 +9,8 @@
     width: 100%;
     margin: 10px 0;
     position: relative;
-    .driveNumber {
+    .driveNumber,
+    .vehicleId {
       position: absolute;
       right: 0;
       top: 0;
@@ -30,10 +31,19 @@
       transition: all 0.2s ease;
     }
     &:hover {
-      .driveNumber {
+      .driveNumber,
+      .vehicleId {
         background: white;
         color: black;
       }
+    }
+    .vehicleId {
+      top: 50%;
+      height: fit-content;
+      width: fit-content;
+      border-radius: 10px;
+      transform: translate(70%, -50%);
+      padding: 7px;
     }
     .row {
       display: grid;

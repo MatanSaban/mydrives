@@ -5,14 +5,22 @@ import { LoadScript, Autocomplete } from "@react-google-maps/api";
 import MapPopup from "./MapPopup";
 
 const AddDriveForm = (props) => {
-    const [startPoint, setStartPoint] = useState(props?.itemData?.startPoint ? props?.itemData?.startPoint : "");
-    const [endPoint, setEndPoint] = useState(props?.itemData?.endPoint ? props?.itemData?.endPoint : "");
+    const [startPoint, setStartPoint] = useState(
+        props?.itemData?.startPoint ? props?.itemData?.startPoint : ""
+    );
+    const [endPoint, setEndPoint] = useState(
+        props?.itemData?.endPoint ? props?.itemData?.endPoint : ""
+    );
     const [kilometers, setKilometers] = useState(0);
     const [estDriveTime, setEstDriveTime] = useState("");
     const [mapVisible, setMapVisible] = useState(false);
     const [focusedInput, setFocusedInput] = useState(null);
-    const [stops, setStops] = useState(props?.itemData?.stops ? [...props?.itemData?.stops] : []);
-    const [stopLocations, setStopLocations] = useState(props?.itemData?.stops ? [...props?.itemData?.stops] : []);
+    const [stops, setStops] = useState(
+        props?.itemData?.stops ? [...props?.itemData?.stops] : []
+    );
+    const [stopLocations, setStopLocations] = useState(
+        props?.itemData?.stops ? [...props?.itemData?.stops] : []
+    );
     const [driveDate, setDriveDate] = useState();
 
     const [drive, setDrive] = useState(props?.itemData);
@@ -97,18 +105,15 @@ const AddDriveForm = (props) => {
                     },
                     (response, status) => {
                         if (
-                            status ===
-                                window.google.maps.DistanceMatrixStatus.OK &&
+                            status === window.google.maps.DistanceMatrixStatus.OK &&
                             response?.rows[0]?.elements[0]?.distance &&
                             response?.rows[0]?.elements[0]?.duration
                         ) {
                             const distanceInMeters =
                                 response.rows[0].elements[0].distance.value;
-                            const distanceInKilometers =
-                                distanceInMeters / 1000;
+                            const distanceInKilometers = distanceInMeters / 1000;
                             setKilometers(distanceInKilometers);
-                            const durationText =
-                                response.rows[0].elements[0].duration.text;
+                            const durationText = response.rows[0].elements[0].duration.text;
                             setEstDriveTime(durationText);
                             resolve(distanceInKilometers);
                         } else {
@@ -138,22 +143,18 @@ const AddDriveForm = (props) => {
                         },
                         (response, status) => {
                             if (
-                                status ===
-                                    window.google.maps.DistanceMatrixStatus
-                                        .OK &&
+                                status === window.google.maps.DistanceMatrixStatus.OK &&
                                 response?.rows[0]?.elements[0]?.distance &&
                                 response?.rows[0]?.elements[0]?.duration
                             ) {
                                 const distanceInMeters =
                                     response.rows[0].elements[0].distance.value;
-                                const distanceInKilometers =
-                                    distanceInMeters / 1000;
+                                const distanceInKilometers = distanceInMeters / 1000;
                                 totalDistance += distanceInKilometers;
 
                                 // Calculate the duration in minutes based on the 'value' field
                                 const durationInMinutes =
-                                    response.rows[0].elements[0].duration
-                                        .value / 60;
+                                    response.rows[0].elements[0].duration.value / 60;
 
                                 // Add the duration in minutes to the total duration
                                 totalDuration += durationInMinutes;
@@ -171,10 +172,7 @@ const AddDriveForm = (props) => {
             const promises = [];
             for (let i = 0; i < totalWaypoints.length - 1; i++) {
                 promises.push(
-                    calculateSegmentDistance(
-                        totalWaypoints[i],
-                        totalWaypoints[i + 1]
-                    )
+                    calculateSegmentDistance(totalWaypoints[i], totalWaypoints[i + 1])
                 );
             }
 
@@ -231,12 +229,12 @@ const AddDriveForm = (props) => {
             startPoint: startPoint,
             stops: stopLocations,
             endPoint: endPoint,
+            vehicleId: event.target.vehicleId.value,
+            vehicleNickname: event.target.vehicleNickname.value,
             id: uuidv4(),
         };
         props.onAddDrive(drive);
     };
-
-    
 
     const handleDriveDate = (e) => {
         console.log("handleDriveDate");
@@ -257,11 +255,7 @@ const AddDriveForm = (props) => {
 
     useEffect(() => {
         const calculateDistanceAndSetValues = async () => {
-            if (
-                startPoint &&
-                endPoint &&
-                stopLocations.length === stops.length
-            ) {
+            if (startPoint && endPoint && stopLocations.length === stops.length) {
                 const distance = await calculateDistance();
                 setKilometers(distance);
             }
@@ -347,7 +341,7 @@ const AddDriveForm = (props) => {
     const handleCancelEdit = (e) => {
         e.preventDefault();
         props.setEditRowState();
-    }
+    };
 
     const handleFields = (e, index) => {
         if (props?.itemData?.stops && e.target.name === "stops" && index) {
@@ -365,16 +359,46 @@ const AddDriveForm = (props) => {
         }
     };
 
-
     return (
         <>
-            <h3>{props?.editMode ? "עדכון נסיעה" : "הוספת נסיעה חדשה"}</h3>
+            <h3>
+                {props?.editMode ? "עדכון נסיעה" : "הוספת נסיעה חדשה"}
+                {props?.selectedVehicle && (
+                    <span> עבור רכב מספר: {props.selectedVehicle}</span>
+                )}
+            </h3>
             <form
                 className={styles.addDriveform}
-                onSubmit={(e) =>
-                    props?.editMode ? handleSave(e) : handleSubmit(e)
-                }
+                onSubmit={(e) => (props?.editMode ? handleSave(e) : handleSubmit(e))}
             >
+                <label>
+                    מספר רכב:
+                    <input
+                        type="number"
+                        disabled={props?.itemData?.vehicleId ? true : false}
+                        name="vehicleId"
+                        id="vehicleId"
+                        defaultValue={props?.itemData?.vehicleId}
+                        onChange={(e) => {
+                            handleDriveDate(e);
+                            handleFields(e);
+                        }}
+                    />
+                </label>
+                <label>
+                    כינוי רכב:
+                    <input
+                        type="text"
+                        disabled={props?.itemData?.vehicleNickname ? true : false}
+                        name="vehicleNickname"
+                        id="vehicleNickname"
+                        defaultValue={props?.itemData?.vehicleNickname}
+                        onChange={(e) => {
+                            handleDriveDate(e);
+                            handleFields(e);
+                        }}
+                    />
+                </label>
                 <label>
                     תאריך נסיעה:
                     <input
@@ -382,9 +406,7 @@ const AddDriveForm = (props) => {
                         name="date"
                         required
                         defaultValue={
-                            props?.itemData?.date
-                                ? props?.itemData?.date
-                                : driveDate
+                            props?.itemData?.date ? props?.itemData?.date : driveDate
                         }
                         onChange={(e) => {
                             handleDriveDate(e);
@@ -442,10 +464,7 @@ const AddDriveForm = (props) => {
                             <Autocomplete
                                 onPlaceSelected={handleStartPointSelect}
                                 onLoad={(autocomplete) =>
-                                    autocomplete.setFields([
-                                        "place_id",
-                                        "formatted_address",
-                                    ])
+                                    autocomplete.setFields(["place_id", "formatted_address"])
                                 }
                             >
                                 <div className={styles.mapInputWrapper}>
@@ -469,8 +488,7 @@ const AddDriveForm = (props) => {
                                     <button
                                         className={styles.smallButton}
                                         onClick={(e) => {
-                                            handleInputFocus(true, e),
-                                                handleStartFocus();
+                                            handleInputFocus(true, e), handleStartFocus();
                                         }}
                                     >
                                         בחר במפה
@@ -482,10 +500,7 @@ const AddDriveForm = (props) => {
                             <label className={styles.mapLabel}>
                                 נקודות עצירה:
                                 {stopLocations.map((location, index) => (
-                                    <div
-                                        key={index}
-                                        className={styles.stopInputWrapper}
-                                    >
+                                    <div key={index} className={styles.stopInputWrapper}>
                                         <Autocomplete
                                             onPlaceSelected={(place) =>
                                                 handleStopSelect(place, index)
@@ -497,38 +512,24 @@ const AddDriveForm = (props) => {
                                                 ])
                                             }
                                         >
-                                            <div
-                                                className={
-                                                    styles.mapInputWrapper
-                                                }
-                                            >
+                                            <div className={styles.mapInputWrapper}>
                                                 <input
                                                     type="text"
                                                     name="stops"
                                                     value={location}
                                                     onChange={(e) => {
-                                                        handleStopChange(
-                                                            e,
-                                                            index
-                                                        );
+                                                        handleStopChange(e, index);
                                                         handleFields(e, index);
                                                     }}
                                                     onBlur={(e) => {
-                                                        handleStopChange(
-                                                            e,
-                                                            index
-                                                        );
+                                                        handleStopChange(e, index);
                                                         handleFields(e, index);
                                                     }}
                                                     placeholder="הזנת נקודת עצירה"
                                                 />
                                                 <button
-                                                    className={
-                                                        styles.smallButton
-                                                    }
-                                                    onClick={() =>
-                                                        handleRemoveStop(index)
-                                                    }
+                                                    className={styles.smallButton}
+                                                    onClick={() => handleRemoveStop(index)}
                                                     type="button"
                                                 >
                                                     הסר
@@ -559,10 +560,7 @@ const AddDriveForm = (props) => {
                             <Autocomplete
                                 onPlaceSelected={handleEndPointSelect}
                                 onLoad={(autocomplete) =>
-                                    autocomplete.setFields([
-                                        "place_id",
-                                        "formatted_address",
-                                    ])
+                                    autocomplete.setFields(["place_id", "formatted_address"])
                                 }
                             >
                                 <div className={styles.mapInputWrapper}>
@@ -586,8 +584,7 @@ const AddDriveForm = (props) => {
                                     <button
                                         className={styles.smallButton}
                                         onClick={(e) => {
-                                            handleInputFocus(true, e),
-                                                handleEndFocus();
+                                            handleInputFocus(true, e), handleEndFocus();
                                         }}
                                     >
                                         בחר במפה
@@ -656,10 +653,7 @@ const AddDriveForm = (props) => {
                         {props?.editMode ? "עדכון הנסיעה" : "הוספת נסיעה לטבלה"}
                     </button>
                     {props?.editMode && (
-                        <button
-                            className={styles.cancelButton}
-                            onClick={handleCancelEdit}
-                        >
+                        <button className={styles.cancelButton} onClick={handleCancelEdit}>
                             ביטול עריכת הנסיעה
                         </button>
                     )}
