@@ -31,19 +31,29 @@
       transition: all 0.2s ease;
     }
     &:hover {
-      .driveNumber,
-      .vehicleId {
+      .driveNumber {
         background: white;
         color: black;
       }
+      .vehicleId {
+        background: #6e5500;
+        color: white;
+      }
     }
     .vehicleId {
-      top: 50%;
+      top: 30%;
+      height: -moz-fit-content;
       height: fit-content;
+      width: -moz-fit-content;
       width: fit-content;
       border-radius: 10px;
-      transform: translate(70%, -50%);
+      transform: translate(100%, -50%);
       padding: 7px;
+      background-color: #fed039;
+      right: 2px;
+      border-radius: 0 20px 20px 0;
+      color: black;
+      font-size: 20px;
     }
     .row {
       display: grid;

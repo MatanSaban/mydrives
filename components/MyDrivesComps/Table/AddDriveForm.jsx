@@ -298,6 +298,10 @@ const AddDriveForm = (props) => {
 
         setStops(updatedStops);
         setStopLocations(updatedStopLocations);
+        setDrive(prevDrive => ({
+            ...prevDrive,
+            stops: updatedStopLocations
+        }));
 
         // Calculate distance if both startPoint, endPoint, and stops are selected
         if (startPoint && endPoint && updatedStopLocations.length > 0) {
@@ -312,6 +316,11 @@ const AddDriveForm = (props) => {
         const updatedStopLocations = [...stopLocations];
         updatedStopLocations[index] = value;
         setStopLocations(updatedStopLocations);
+
+        setDrive(prevDrive => ({
+            ...prevDrive,
+            stops: updatedStopLocations
+        }));
     };
 
     const handleStopSelect = async (place, index) => {
@@ -329,12 +338,14 @@ const AddDriveForm = (props) => {
 
     const handleSave = (e) => {
         e.preventDefault();
-        console.log(e);
+        console.log(newDrive);
         const newDrive = {
             ...drive,
             kilometers: kilometers.toFixed(2),
             estimatedDrivingTime: estDriveTime,
         };
+        console.log('newDrive');
+        console.log(newDrive);
         props.handleEditSave(newDrive, e);
     };
 
@@ -375,12 +386,11 @@ const AddDriveForm = (props) => {
                     מספר רכב:
                     <input
                         type="number"
-                        disabled={props?.itemData?.vehicleId ? true : false}
+                        disabled={props?.itemData?.vehicleId || props?.selectedVehicle ? true : false}
                         name="vehicleId"
                         id="vehicleId"
-                        defaultValue={props?.itemData?.vehicleId}
+                        defaultValue={props?.itemData?.vehicleId ? props?.itemData?.vehicleId : props?.selectedVehicle}
                         onChange={(e) => {
-                            handleDriveDate(e);
                             handleFields(e);
                         }}
                     />
@@ -389,12 +399,11 @@ const AddDriveForm = (props) => {
                     כינוי רכב:
                     <input
                         type="text"
-                        disabled={props?.itemData?.vehicleNickname ? true : false}
+                        disabled={props?.itemData?.vehicleNickname || props?.vehicleNickname ? true : false}
                         name="vehicleNickname"
                         id="vehicleNickname"
-                        defaultValue={props?.itemData?.vehicleNickname}
+                        defaultValue={props?.itemData?.vehicleNickname ? props?.itemData?.vehicleNickname : props?.vehicleNickname}
                         onChange={(e) => {
-                            handleDriveDate(e);
                             handleFields(e);
                         }}
                     />
