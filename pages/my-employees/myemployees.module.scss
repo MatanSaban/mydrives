@@ -1,0 +1,48 @@
+.myEmployeesWrapper {
+  width: 100%;
+  position: relative;
+  .myEmployeesContainer {
+    position: relative;
+    width: 70%;
+    margin: 0 auto;
+    .employees {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      position: relative;
+      .employee {
+        width: 100%;
+        box-shadow: 0 0 10px black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        overflow: hidden;
+        h4 {
+        }
+        .imagesWrapper {
+          width: 100%;
+          position: relative;
+          > span {
+            width: 100%;
+            position: relative;
+            > span {
+              width: 100%;
+              position: relative;
+            }
+            img {
+              width: 100% !important;
+              object-fit: cover;
+            }
+          }
+        }
+        .employeeDetails {
+        }
+      }
+    }
+  }
+}

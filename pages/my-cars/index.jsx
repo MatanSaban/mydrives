@@ -4,10 +4,11 @@ import CarBuilder from '../../components/CarAddCompos/CarBuilder';
 import axios from 'axios';
 import styles from "./mycars.module.scss";
 import Image from "next/image";
-import israelFlag from "../../public/media/images/israelFlagForLicensePlate.png";
+import israelFlag from '../../public/media/images/israelFlagForLicensePlate.png';
 import { AiOutlineClose } from "react-icons/ai";
 import { CiEdit } from "react-icons/ci";
 import { israeliDate } from "../../functions/functions";
+import Hero from '../../components/HeroComp/Hero';
 
 
 
@@ -432,70 +433,71 @@ const MyCars = (props) => {
     };
 
 
-  return (
-    <div className={styles.myCars}>
-                    <h3>הרכבים שלי</h3>
-                    {props?.userData?.cars?.length <= 0 && (
-                        <h5>טרם הוספת רכבים</h5>
-                    )}
-                    {props?.userData?.cars?.map((car) => {
-                        return (
-                            <div key={car?.records[0]?.mispar_rechev}>
-                                {generateLicensePlate(
-                                    car?.records[0]?.mispar_rechev,
-                                    car
-                                )}
-                            </div>
-                        );
-                    })}
-                    <div className={styles.addCar}>
-                        <button
-                            className={styles.addCarBtn}
-                            onClick={() => {
-                                setShowVehicleFinder(!showVehicleFinder);
-                                setShowVehicleBuilder(false);
-                            }}
-                        >
-                            הוספת רכב לפי מס&apos; רישוי
-                        </button>
-                        <button
-                            className={styles.addCarBtn}
-                            onClick={() => {
-                                // setShowVehicleBuilder(!showVehicleBuilder);
-                                setUserCars([...userCars, {}]);
-                                editCar(null);
-                                setShowVehicleFinder(false);
-                            }}
-                        >
-                            הוספת רכב ידנית
-                        </button>
-                        {showVehicleFinder && (
-                            <LicensePlateSearch
-                                searchByVehicleId={searchByVehicleId}
-                                handleSearchByVehicleId={
-                                    handleSearchByVehicleId
-                                }
-                                vehicleIdNumber={vehicleIdNumber}
-                                vehicle={vehicle}
-                                setVehicle={handleSetVehicle}
-                                handlePopup={props.handlePopup}
-                                isResults={isResults}
-                                addToVehiclesCB={addToVehiclesCB}
-                            />
-                        )}
-                        {showVehicleBuilder && (
-                            <CarBuilder
-                                searchByVehicleId={searchByVehicleId}
-                                vehicleIdNumber={vehicleIdNumber}
-                                vehicle={vehicle}
-                                setVehicle={handleSetVehicle}
-                                handlePopup={props.handlePopup}
-                                addToVehiclesCB={addToVehiclesCB}
-                            />
+    return (
+        <div className={styles.myCars}>
+            <Hero title="הרכבים שלי" />
+
+            {props?.userData?.cars?.length <= 0 && (
+                <h5>טרם הוספת רכבים</h5>
+            )}
+            {props?.userData?.cars?.map((car) => {
+                return (
+                    <div key={car?.records[0]?.mispar_rechev}>
+                        {generateLicensePlate(
+                            car?.records[0]?.mispar_rechev,
+                            car
                         )}
                     </div>
-                </div>
-  )
+                );
+            })}
+            <div className={styles.addCar}>
+                <button
+                    className={styles.addCarBtn}
+                    onClick={() => {
+                        setShowVehicleFinder(!showVehicleFinder);
+                        setShowVehicleBuilder(false);
+                    }}
+                >
+                    הוספת רכב לפי מס&apos; רישוי
+                </button>
+                <button
+                    className={styles.addCarBtn}
+                    onClick={() => {
+                        // setShowVehicleBuilder(!showVehicleBuilder);
+                        setUserCars([...userCars, {}]);
+                        editCar(null);
+                        setShowVehicleFinder(false);
+                    }}
+                >
+                    הוספת רכב ידנית
+                </button>
+                {showVehicleFinder && (
+                    <LicensePlateSearch
+                        searchByVehicleId={searchByVehicleId}
+                        handleSearchByVehicleId={
+                            handleSearchByVehicleId
+                        }
+                        vehicleIdNumber={vehicleIdNumber}
+                        vehicle={vehicle}
+                        setVehicle={handleSetVehicle}
+                        handlePopup={props.handlePopup}
+                        isResults={isResults}
+                        addToVehiclesCB={addToVehiclesCB}
+                    />
+                )}
+                {showVehicleBuilder && (
+                    <CarBuilder
+                        searchByVehicleId={searchByVehicleId}
+                        vehicleIdNumber={vehicleIdNumber}
+                        vehicle={vehicle}
+                        setVehicle={handleSetVehicle}
+                        handlePopup={props.handlePopup}
+                        addToVehiclesCB={addToVehiclesCB}
+                    />
+                )}
+            </div>
+        </div>
+    )
 }
 
 export default MyCars
