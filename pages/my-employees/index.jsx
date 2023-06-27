@@ -4,6 +4,7 @@ import styles from "./myemployees.module.scss";
 import placeHolderProfileImage from '../../public/media/images/placeholder-profile.jpg'
 import placeHolderCarImage from '../../public/media/images/placeHolderCarImage.png'
 import Image from "next/image";
+import AddEmployeeForm from "../../components/EmployeesComps/AddEmployeeForm";
 
 const MyEmployees = (props) => {
 
@@ -180,6 +181,7 @@ const MyEmployees = (props) => {
         <div className={styles.myEmployeesWrapper}>
             <Hero title="העובדים שלי" />
             <div className={styles.myEmployeesContainer}>
+                <AddEmployeeForm userData={props?.userData} />
                 <div className={styles.employees}>
                     {employees?.map((employee) => {
                         return (

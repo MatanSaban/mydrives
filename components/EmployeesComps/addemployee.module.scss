@@ -1,0 +1,106 @@
+.wrapper {
+  .form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 70%;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: flex-start;
+    row-gap: 20px;
+    margin-bottom: 100px;
+    .labelWrapper {
+      position: relative;
+      width: 100%;
+
+      label {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px 5px;
+        font-size: 24px;
+        background: linear-gradient(#ffedb100 50%, #ffffff00 50%);
+        transition: all 0.3s ease;
+      }
+
+      input {
+        padding: 10px 5px;
+        font-size: 24px;
+        border-radius: 10px;
+        width: 90%;
+        border: none;
+        box-sizing: border-box;
+
+        &:focus {
+          border: 2px solid black;
+        }
+      }
+
+      select {
+        box-sizing: border-box;
+
+        width: 90%;
+        border-radius: 10px;
+        padding: 10px 5px;
+        font-size: 24px;
+        margin: 0;
+        border: none;
+      }
+    }
+
+    .labelWrapper.focused,
+    .labelWrapper.filled {
+      label {
+        padding: 5px;
+        right: 15px;
+        font-size: 14px;
+        transform: translateY(-50%);
+        background: linear-gradient(#ffedb1 50%, #fff 50%);
+        transition: all 0.3s ease;
+      }
+
+      input {
+        border: 2px solid rgb(224, 224, 224);
+      }
+    }
+
+    .parentWrapper {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      row-gap: 10px;
+      box-sizing: border-box;
+      .row {
+        display: flex;
+        width: 90%;
+        position: relative;
+        box-sizing: border-box;
+        justify-content: space-between;
+        column-gap: 10px;
+        .labelWrapper {
+          width: fit-content;
+          input {
+            margin-left: 10px;
+          }
+          &:last-of-type {
+            input {
+              margin-left: 0;
+            }
+          }
+        }
+        input {
+          box-sizing: border-box;
+          width: 100%;
+        }
+      }
+      .labelWrapper {
+        // margin-bottom: 10px;
+        label {
+        }
+
+        input {
+        }
+      }
+    }
+  }
+}
