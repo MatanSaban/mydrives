@@ -8,6 +8,54 @@
     align-items: flex-start;
     row-gap: 20px;
     margin-bottom: 100px;
+    .dateInput::-webkit-inner-spin-button {
+      display: none;
+    }
+
+    .dateInput::-webkit-calendar-picker-indicator {
+      background: transparent;
+    }
+
+    .dateInput {
+      color: transparent;
+    }
+
+    .dateInput:valid {
+      color: black;
+    }
+
+    input[type="date"]::before {
+      content: attr(placeholder);
+      position: absolute;
+      color: #999999;
+    }
+
+    input[type="date"] {
+      color: #ffffff;
+    }
+
+    input[type="date"]:focus,
+    input[type="date"]:valid {
+      color: #666666;
+    }
+
+    input[type="date"]:focus::before,
+    input[type="date"]:valid::before {
+      content: "";
+    }
+
+    .submit_btn {
+      grid-column: span 2; // Tells the button to span both columns
+      width: 100%; // Sets the width to be 100% of the container
+      margin: 0 auto; // Centers the button
+    }
+    h3 {
+      margin: 0 -5px 0 0;
+      padding-bottom: 5px;
+      padding-right: 5px;
+      border-bottom: 3px solid black;
+      border-radius: 0 10px 10px 0;
+    }
     .labelWrapper {
       position: relative;
       width: 100%;
