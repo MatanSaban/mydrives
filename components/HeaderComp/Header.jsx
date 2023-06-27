@@ -12,11 +12,11 @@ const Header = (props) => {
                 style={
                     props.isMobileDevice
                         ? {
-                              width: "100vw",
-                              padding: "0",
-                              margin: "0",
-                              borderRadius: "0 0 30px 30px",
-                          }
+                            width: "100vw",
+                            padding: "0",
+                            margin: "0",
+                            borderRadius: "0 0 30px 30px",
+                        }
                         : {}
                 }
             >
@@ -30,9 +30,8 @@ const Header = (props) => {
                 <div className={HeaderStyles.mainMenu}>
                     {props.isMobileDevice && (
                         <div
-                            className={`${HeaderStyles.mobileMenuButton} ${
-                                mobileMenuOpen ? HeaderStyles.open : ""
-                            }`}
+                            className={`${HeaderStyles.mobileMenuButton} ${mobileMenuOpen ? HeaderStyles.open : ""
+                                }`}
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         >
                             <div className={HeaderStyles.lines}>
@@ -55,6 +54,9 @@ const Header = (props) => {
                         <ul>
                             <li>
                                 <Link href="/">עמוד ראשי</Link>
+                            </li>
+                            <li>
+                                <Link href="/my-courses">המסלולים שלי</Link>
                             </li>
                             <li>
                                 <Link href="/my-drives">הנסיעות שלי</Link>
@@ -102,14 +104,14 @@ const Header = (props) => {
                             <h4>תפריט האתר</h4>
                             <ul>
                                 <li onClick={() => {
-                                                setMobileMenuOpen(false);
-                                            }}>
+                                    setMobileMenuOpen(false);
+                                }}>
                                     <Link href={"/"}>עמוד ראשי</Link>
                                 </li>
                                 <li onClick={() => {
-                                                setMobileMenuOpen(false);
-                                            }}>
-                                    <Link  href={"/"}>הנסיעות שלי</Link>
+                                    setMobileMenuOpen(false);
+                                }}>
+                                    <Link href={"/"}>הנסיעות שלי</Link>
                                 </li>
                             </ul>
                             <div className={HeaderStyles.userComp}>

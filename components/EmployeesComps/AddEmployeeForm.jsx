@@ -158,25 +158,40 @@ const AddEmployeeForm = (props) => {
                     <label>
                         תפקיד
                     </label>
-                    <input
+                    <select
                         name="role"
                         id="role"
                         onChange={(e) => handleFields(e)}
                         onBlur={(e) => handleInputBlur(e)}
                         onFocus={(e) => handleInputFocus(e)}
-                    />
+                    >
+                        <option value="choose"></option>
+                        <option value="owner">בעלים</option>
+                        <option value="manager">מנהל עבודה</option>
+                        <option value="controller">מרכזן</option>
+                        <option value="driver">נהג</option>
+                    </select>
                 </div>
                 <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
                     <label>
                         דרגת רישיון
                     </label>
-                    <input
+                    <select
                         name="licenseLevel"
                         id="licenseLevel"
                         onChange={(e) => handleFields(e)}
                         onBlur={(e) => handleInputBlur(e)}
                         onFocus={(e) => handleInputFocus(e)}
-                    />
+                    >
+                        <option value="choose"></option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="C1">C1</option>
+                        <option value="D">D</option>
+                        <option value="D1">D1</option>
+                        <option value="D2">D2</option>
+                        <option value="D3">D3</option>
+                    </select>
                 </div>
                 <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
                     <label>
@@ -204,6 +219,7 @@ const AddEmployeeForm = (props) => {
                         onFocus={(e) => { handleInputFocus(e); handleFocus(e.target.name) }}
                     />
                 </div>
+
                 <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
                     <label>
                         הצמדת רכב
@@ -227,6 +243,120 @@ const AddEmployeeForm = (props) => {
                                 })
                             }
                         </select>}
+                </div>
+                <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
+                    <label>
+                        הצמדת מסלול קבוע
+                    </label>
+                    {props?.userData?.cars.length > 0 &&
+                        <select
+                            name="course"
+                            id="course"
+                            onChange={(e) => { handleFields(e); handleInputBlur(e) }}
+                            onBlur={(e) => handleInputBlur(e)}
+                            onFocus={(e) => handleInputFocus(e)}
+                        >
+                            <option value="choose"></option>
+                            {
+                                props?.userData?.cars.map((car) => {
+                                    return (
+                                        <option key={car?.records[0]?.mispar_rechev} value={car?.records[0]?.mispar_rechev}>
+                                            {car?.records[0]?.mispar_rechev}
+                                        </option>
+                                    )
+                                })
+                            }
+                        </select>}
+                </div>
+                <div className={`${styles.parentWrapper} ${styles.address}`}>
+                    <h3>תאריכי העסקה</h3>
+                    <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
+                        <label>
+                            התחלת עבודה
+                        </label>
+                        <input
+                            type={dateInputsFocused["jobStarted"] ? "date" : "text"}
+                            name="jobStarted"
+                            id="jobStarted"
+                            onChange={(e) => handleFields(e)}
+                            onBlur={(e) => { handleInputBlur(e); handleBlur(e.target.name, e.target.value) }}
+                            onFocus={(e) => { handleInputFocus(e); handleFocus(e.target.name) }}
+                        />
+                    </div>
+                    <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
+                        <label>
+                            סיום עבודה (השאר ריק אם העובד עדיין פעיל)
+                        </label>
+                        <input
+                            type={dateInputsFocused["jobEnded"] ? "date" : "text"}
+                            name="jobEnded"
+                            id="jobEnded"
+                            onChange={(e) => handleFields(e)}
+                            onBlur={(e) => { handleInputBlur(e); handleBlur(e.target.name, e.target.value) }}
+                            onFocus={(e) => { handleInputFocus(e); handleFocus(e.target.name) }}
+                        />
+                    </div>
+                </div>
+                <div className={`${styles.parentWrapper} ${styles.bankAccount}`}>
+                    <h3>פרטי בנק</h3>
+                    <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
+                        <label>
+                            בנק
+                        </label>
+                        <input
+                            type="text"
+                            parent="bankAccount"
+                            name="bankName"
+                            id="bankName"
+                            onChange={(e) => handleFields(e)}
+                            onBlur={(e) => handleInputBlur(e)}
+                            onFocus={(e) => handleInputFocus(e)}
+                        />
+                    </div>
+                    <div className={styles.row}>
+                        <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
+                            <label>
+                                מספר בנק
+                            </label>
+                            <input
+                                type="number"
+                                parent="bankAccount"
+                                name="number"
+                                id="bankNumber"
+                                onChange={(e) => handleFields(e)}
+                                onBlur={(e) => handleInputBlur(e)}
+                                onFocus={(e) => handleInputFocus(e)}
+                            />
+                        </div>
+                        <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
+                            <label>
+                                מספר סניף
+                            </label>
+                            <input
+                                type="number"
+                                parent="bankAccount"
+                                name="branch"
+                                id="branch"
+                                onChange={(e) => handleFields(e)}
+                                onBlur={(e) => handleInputBlur(e)}
+                                onFocus={(e) => handleInputFocus(e)}
+                            />
+                        </div>
+                        <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
+                            <label>
+                                מספר חשבון
+                            </label>
+                            <input
+                                type="number"
+                                parent="bankAccount"
+                                name="accountNumber"
+                                id="accountNumber"
+                                onChange={(e) => handleFields(e)}
+                                onBlur={(e) => handleInputBlur(e)}
+                                onFocus={(e) => handleInputFocus(e)}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div className={`${styles.parentWrapper} ${styles.address}`}>
                     <h3>כתובת</h3>
@@ -349,67 +479,7 @@ const AddEmployeeForm = (props) => {
                         />
                     </div>
                 </div>
-                <div className={`${styles.parentWrapper} ${styles.bankAccount}`}>
-                    <h3>פרטי בנק</h3>
-                    <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
-                        <label>
-                            בנק
-                        </label>
-                        <input
-                            type="text"
-                            parent="bankAccount"
-                            name="bankName"
-                            id="bankName"
-                            onChange={(e) => handleFields(e)}
-                            onBlur={(e) => handleInputBlur(e)}
-                            onFocus={(e) => handleInputFocus(e)}
-                        />
-                    </div>
-                    <div className={styles.row}>
-                        <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
-                            <label>
-                                מספר בנק
-                            </label>
-                            <input
-                                type="number"
-                                parent="bankAccount"
-                                name="number"
-                                id="bankNumber"
-                                onChange={(e) => handleFields(e)}
-                                onBlur={(e) => handleInputBlur(e)}
-                                onFocus={(e) => handleInputFocus(e)}
-                            />
-                        </div>
-                        <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
-                            <label>
-                                מספר סניף
-                            </label>
-                            <input
-                                type="number"
-                                parent="bankAccount"
-                                name="branch"
-                                id="branch"
-                                onChange={(e) => handleFields(e)}
-                                onBlur={(e) => handleInputBlur(e)}
-                                onFocus={(e) => handleInputFocus(e)}
-                            />
-                        </div>
-                        <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
-                            <label>
-                                מספר חשבון
-                            </label>
-                            <input
-                                type="number"
-                                parent="bankAccount"
-                                name="accountNumber"
-                                id="accountNumber"
-                                onChange={(e) => handleFields(e)}
-                                onBlur={(e) => handleInputBlur(e)}
-                                onFocus={(e) => handleInputFocus(e)}
-                            />
-                        </div>
-                    </div>
-                </div>
+
                 <button className={styles.submit_btn}>הוספת העובד</button>
             </form>
         </div>
