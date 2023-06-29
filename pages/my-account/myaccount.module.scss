@@ -1,90 +1,109 @@
 .main {
-    min-height: 73.6vh;
-    p {
-        text-align: center;
+  min-height: 73.6vh;
+  p {
+    text-align: center;
+  }
+  .myAccountContentWrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+    margin: 0 auto;
+    > div {
+      width: 50%;
+      border: 1px solid black;
+      border-radius: 10px;
+      margin: 0 10px;
     }
-    .myAccountContentWrapper {
-        display: flex;
-        justify-content: space-around;
-        width: 70%;
-        margin: 0 auto;
-        > div {
-            width: 50%;
-            border: 1px solid black;
-            border-radius: 10px;
-            margin: 0 10px;
-        }
+  }
+  .formWrapper {
+    text-align: center;
+    h3 {
+      text-align: center;
     }
-    .formWrapper {
-        text-align: center;
-        h3 {
-            text-align: center;
-        }
-        form {
-            width: 500px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            margin: 0 auto;
+    form {
+      width: 500px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      margin: 0 auto;
 
-            .inputWrapper {
-                margin: 10px auto;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                position: relative;
-                label {
-                    text-align: right;
-                    width: 100%;
-                    margin-bottom: 5px;
-                }
-                input {
-                    padding: 8px 20px;
-                    border: none;
-                    border-radius: 20px;
-                    min-width: 180px;
-                }
-            }
-            .buttonWrapper {
-                grid-column: 1 / -1;
-                display: flex;
-                justify-content: center;
-                .submitButton {
-                    margin: 20px auto;
-                    text-align: center;
-                }
-            }
+      .inputWrapper {
+        margin: 10px auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        label {
+          text-align: right;
+          width: 100%;
+          margin-bottom: 5px;
         }
+        input {
+          padding: 8px 20px;
+          border: none;
+          border-radius: 20px;
+          min-width: 180px;
+        }
+      }
+      .buttonWrapper {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: center;
+        .submitButton {
+          margin: 20px auto;
+          text-align: center;
+        }
+      }
     }
-    
+  }
+}
+.myaccountpage {
+  .form {
+    .labelWrapper {
+      .inPopup {
+        label {
+          padding: 5px;
+          right: 15px;
+          font-size: 14px;
+          transform: translateY(-50%);
+          background: linear-gradient(#ffedb1 50%, #fff 50%) !important;
+          transition: all 0.3s ease;
+        }
+
+        input {
+          border: 2px solid rgb(224, 224, 224);
+        }
+      }
+    }
+  }
 }
 
 .centered {
-    justify-content: center;
-    text-align: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .disabled {
   opacity: 0.5 !important;
 }
 @media only screen and (max-width: 767px) {
-    .main {
-        min-height: 73.5vh;
-        p {
-            text-align: center;
-        }
-        .formWrapper {
-            position: relative;
-            width: 100vw;
-            form {
-                max-width: 100%;
-                // grid-template-columns: repeat(1, 1fr);
-                .inputWrapper {
-                    input {
-                        padding: 8px 10px;
-                        min-width: 160px;
-                    }
-                }
-            }
-        }
+  .main {
+    min-height: 73.5vh;
+    p {
+      text-align: center;
     }
+    .formWrapper {
+      position: relative;
+      width: 100vw;
+      form {
+        max-width: 100%;
+        // grid-template-columns: repeat(1, 1fr);
+        .inputWrapper {
+          input {
+            padding: 8px 10px;
+            min-width: 160px;
+          }
+        }
+      }
+    }
+  }
 }

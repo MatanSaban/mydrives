@@ -123,7 +123,8 @@
       transition: all 0.3s ease;
     }
 
-    input {
+    input,
+    select {
       border: 2px solid rgb(224, 224, 224);
     }
   }
@@ -170,4 +171,24 @@
 }
 .popupContentWrapper {
   background-color: red !important;
+}
+.myaccountpage {
+  .form {
+    .labelWrapper {
+      .inPopup {
+        label {
+          padding: 5px;
+          right: 15px;
+          font-size: 14px;
+          transform: translateY(-50%);
+          background: linear-gradient(#ffedb1 50%, #fff 50%) !important;
+          transition: all 0.3s ease;
+        }
+
+        input {
+          border: 2px solid rgb(224, 224, 224);
+        }
+      }
+    }
+  }
 }
