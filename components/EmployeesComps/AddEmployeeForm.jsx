@@ -1,83 +1,38 @@
 import React, { useState } from 'react';
 import styles from './addemployee.module.scss';
 import GeneralForm from '../FormBuilder/GeneralForm';
+import axios from 'axios';
 
 const AddEmployeeForm = (props) => {
-    const [focusedLabel, setFocusedLabel] = useState('');
-    const [dateInputsFocused, setDateInputsFocused] = useState({});
+
+    const [employee, setEmployee] = useState({});
 
     const handleFields = (e) => {
-        // handleFields logic
+        const target = e.target;
+        setEmployee({ ...employee, [target.name]: target.value });
     };
 
     const handleSubmit = (e) => {
-        // handleSubmit logic
+
+        const oldEployees = props?.userData?.employees;
+        oldEployees.push(employee);
+        let employees = oldEployees;
+        const data = props?.userData;
+        data.employees = employees;
+
+        console.log('newUserData')
+        console.log(data)
+        axios.put(`/api/users/${props?.userData?._id}`, {
+            employees: oldEployees
+        }).then((res) => {
+            if (res.status === 200) {
+                props?.handleUserData(res.data)
+            }
+        })
+
     };
 
 
-    // The onFocus and onBlur handlers
-    const handleFocus = (name) => {
-
-    }
-
-    const handleBlur = (name, value) => {
-        if (!value) {
-            setDateInputsFocused(prevState => ({ ...prevState, [name]: false }));
-        }
-    }
-
-
-    const handleInputFocus = (e) => {
-        const input = e.target;
-        const labelWrapper = input.closest(`.${styles.labelWrapper}`);
-
-        labelWrapper.classList.add(styles.focused);
-        setFocusedLabel(labelWrapper.id);
-        console.log('e.target.attributes.dateandtext');
-        console.log(e.target.attributes.dateandtext);
-        if (e.target.attributes['dateandtext']?.value == 'true') {
-            console.log('e.target.name');
-            console.log(e.target.name);
-            setDateInputsFocused(prevState => ({ ...prevState, [e.target.name]: true }));
-        }
-    };
-
-    const handleInputBlur = (e) => {
-        const input = e.target;
-        const labelWrapper = input.closest(`.${styles.labelWrapper}`);
-
-        labelWrapper.classList.remove(styles.focused);
-        setFocusedLabel('');
-
-        console.log('input.value');
-        console.log(input.value);
-        if (input.value.trim() !== '' && input.value.trim() != 'choose') {
-            labelWrapper.classList.add(styles.filled);
-            console.log("here");
-        } else {
-            labelWrapper.classList.remove(styles.filled);
-            console.log("here2");
-        }
-    };
-
-    const handleLabelClick = (e) => {
-        const label = e.target;
-        const labelWrapper = label.closest(`.${styles.labelWrapper}`);
-        const input = labelWrapper.querySelector('input');
-        const select = labelWrapper.querySelector('select');
-
-        if (input) {
-            input.focus();
-        }
-        if (select) {
-            select.focus();
-        }
-
-        if (!labelWrapper.classList.contains(styles.filled) && !labelWrapper.classList.contains(styles.focused)) {
-            labelWrapper.classList.add(styles.focused);
-            setFocusedLabel(labelWrapper.id);
-        }
-    };
 
     const [formJson, setFormJson] = useState({
         "fields": [
@@ -216,7 +171,7 @@ const AddEmployeeForm = (props) => {
                     "onChange": "handleFields",
                     "onBlur": "handleInputBlur",
                     "onFocus": "handleInputFocus"
-                }
+                },
             },
             {
                 "label": "הצמדת מסלול קבוע",
@@ -240,7 +195,7 @@ const AddEmployeeForm = (props) => {
 
     return (
         <div className={styles.wrapper}>
-            <GeneralForm dateInputsFocused={dateInputsFocused} buttonText={"הוספת עובד"} json={formJson} onLabelClickFunc={handleLabelClick} onChangeFunc={handleFields} onBlurFunc={handleInputBlur} onFocusFunc={handleInputFocus} onSubmitFunc={handleSubmit} />
+            <GeneralForm buttonText={"הוספת עובד"} json={formJson} onChangeFunc={handleFields} onSubmitFunc={handleSubmit} />
             {/* <form onSubmit={(e) => handleSubmit(e)} className={styles.form}>
                 <div className={`${styles.labelWrapper} `} onClick={(e) => handleLabelClick(e)}>
                     <label>

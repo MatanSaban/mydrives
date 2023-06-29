@@ -35,6 +35,10 @@ const userSchema = new Schema({
     type: Array,
     default: [],
   },
+  employees: {
+    type: Array,
+    default: [],
+  },
 });
 
 const Users = models.user || model("user", userSchema);

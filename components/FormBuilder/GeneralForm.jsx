@@ -1,66 +1,133 @@
-import React from 'react';
-import styles from '../EmployeesComps/addemployee.module.scss'
+import React, { useState } from 'react';
+import styles from './generalform.module.scss';
 
 const GeneralForm = (props) => {
+    const [focusedLabel, setFocusedLabel] = useState('');
+    const [dateInputsFocused, setDateInputsFocused] = useState({});
+
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        // Handle form submission logic
+        props.onSubmitFunc(event)
     };
 
-    // const mapFunctionNameToFunction = async (functionName) => {
-    //     try {
-    //         const functions = await import('../../functions/functions.js');
-    //         const fn = functions[functionName];
-    //         if (typeof fn === 'function') {
-    //             return fn;
-    //         } else {
-    //             console.error(`Function ${functionName} not found.`);
-    //             return null;
-    //         }
-    //     } catch (error) {
-    //         console.error(`Error importing functions: ${error}`);
-    //         return null;
-    //     }
-    // };
+    const shouldRenderField = (condition) => {
+        // Evaluate the condition expression dynamically
+        if (condition) {
+            return !!eval(condition);
+        } else {
+            return true;
+        }
+    };
+
+    const onFocusFunc = (e) => {
+        const input = e.target;
+        const labelWrapper = input.closest(`.${styles.labelWrapper}`);
+
+        labelWrapper.classList.add(styles.focused);
+        labelWrapper.classList.remove(styles.notFocused);
+        labelWrapper.classList.remove(styles.notFilled);
+        setFocusedLabel(labelWrapper.id);
+
+        if (e.target.attributes['dateandtext']?.value === 'true') {
+            setDateInputsFocused((prevState) => ({ ...prevState, [e.target.name]: true }));
+        }
+    };
+
+    const onBlurFunc = (e) => {
+        const input = e.target;
+        const labelWrapper = input.closest(`.${styles.labelWrapper}`);
+
+        labelWrapper.classList.add(styles.notFilled);
+        labelWrapper.classList.add(styles.notFocused);
+        labelWrapper.classList.remove(styles.focused);
+        setFocusedLabel('');
+
+        if (input.value.trim() !== '' && input.value.trim() !== 'choose') {
+            labelWrapper.classList.add(styles.filled);
+        } else {
+            labelWrapper.classList.remove(styles.filled);
+        }
+    };
+
+    const onLabelClickFunc = (e) => {
+        const label = e.target;
+        const labelWrapper = label.closest(`.${styles.labelWrapper}`);
+        const input = labelWrapper.querySelector('input');
+        const select = labelWrapper.querySelector('select');
+
+        if (input) {
+            input.focus();
+        }
+        if (select) {
+            select.focus();
+        }
+
+        if (!labelWrapper.classList.contains(styles.filled) && !labelWrapper.classList.contains(styles.focused)) {
+            labelWrapper.classList.add(styles.focused);
+            setFocusedLabel(labelWrapper.id);
+        }
+    };
+
+
+    const onChangeFunc = (e) => {
+        props.onChangeFunc(e, props?.passedData);
+    };
+
+
+    const checkForPassedData = (defVal) => {
+        const data = props?.passedData;
+        if (data && defVal) {
+            let value = defVal.split('?.');
+            value[0] = "data";
+            value = value.join("?.")
+            return eval(value);
+        } else {
+            return null;
+        }
+    };
 
 
     return (
-        <div>
-            <form className={styles.form} onSubmit={(e) => props.onSubmitFunc(e)}>
-                {props?.json?.fields?.map((field) => (
-                    <div className={styles.labelWrapper} onClick={(e) => props.onLabelClickFunc(e)} key={field.name}>
-                        {/* {console.log('field?.autocomplete')}
-                        {console.log(field.attributes.dateandtext)} */}
-                        <label>{field.label}</label>
-                        {field.type === 'select' ? (
+        <form className={styles.form} onSubmit={(e) => handleFormSubmit(e)}>
+            {props?.json?.fields?.map((field) =>
+                shouldRenderField(field.condition) ? (
+                    <div className={`${styles.labelWrapper} ${field?.defaultValue?.length > 0 ? `${styles.filled} ${styles.inPopupForm}` : ``}`} onClick={(e) => onLabelClickFunc(e)} key={field.name}>
+                        <label className={`${styles.labelWrapper} ${field?.defaultValue?.length > 0 ? styles.inPopupForm : ""}`} >{field.label}</label>
+                        {field.type === 'select' && (
                             <select
                                 name={field.name}
-                                onChange={(e) => props.onChangeFunc(e)}
-                                onBlur={(e) => props.onBlurFunc(e)}
-                                onFocus={(e) => props.onFocusFunc(e)}
+                                onChange={(e) => onChangeFunc(e)}
+                                onBlur={(e) => onBlurFunc(e)}
+                                onFocus={(e) => onFocusFunc(e)}
+                                defaultValue={field?.defaultValue && checkForPassedData(field?.defaultValue)}
+                                required={field?.required ? field?.required : false}
                             >
                                 {field.options.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
+                                    <option key={option?.value} value={option?.value}>
+                                        {option?.label}
                                     </option>
                                 ))}
                             </select>
-                        ) : (
+                        )}
+                        {field.type !== 'select' && (
                             <input
-                                type={props.dateInputsFocused?.[field.name] === true ? "date" : "text"}
+                                type={dateInputsFocused?.[field.name] === true ? 'date' : 'text'}
                                 name={field.name}
-                                onChange={(e) => props.onChangeFunc(e)}
-                                onBlur={(e) => props.onBlurFunc(e)}
-                                onFocus={(e) => props.onFocusFunc(e)}
-                                autoComplete={field?.autocomplete ? field?.autocomplete : "false"}
+                                onChange={(e) => onChangeFunc(e)}
+                                onBlur={(e) => onBlurFunc(e)}
+                                onFocus={(e) => onFocusFunc(e)}
+                                autoComplete={field?.autocomplete ? field?.autocomplete : 'false'}
                                 dateandtext={field?.attributes.dateandtext ? 'true' : 'false'}
+                                defaultValue={field?.defaultValue && checkForPassedData(field?.defaultValue)}
+                                required={field?.required ? field?.required : false}
+
                             />
                         )}
                     </div>
-                ))}
-                <button className={styles.submit_btn}>{props.buttonText}</button>
-            </form>
-        </div>
+                ) : null
+            )}
+            <button className={styles.submit_btn}>{props.buttonText}</button>
+        </form>
     );
 };
 

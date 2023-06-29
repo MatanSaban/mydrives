@@ -9,6 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { CiEdit } from "react-icons/ci";
 import { israeliDate } from "../../functions/functions";
 import Hero from '../../components/HeroComp/Hero';
+import GeneralForm from '../../components/FormBuilder/GeneralForm';
 
 
 
@@ -20,6 +21,131 @@ const MyCars = (props) => {
     const [showVehicleBuilder, setShowVehicleBuilder] = useState(false);
     const [isResults, setIsResults] = useState();
     const [userCars, setUserCars] = useState(props?.userData?.cars);
+    const [formJson, setFormJson] = useState({
+        "fields": [
+            {
+                "label": "מספר רכב",
+                "name": "mispar_rechev",
+                "type": "number",
+                "maxLength": 8,
+                "minLength": 7,
+                "required": true,
+                "defaultValue": "car?.records[0]?.mispar_rechev",
+                "placeholder": "XXX-XX-XXX או XX-XXX-XX",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "יצרן",
+                "name": "tozeret_nm",
+                "type": "text",
+                "defaultValue": "car?.records[0]?.tozeret_nm",
+                "placeholder": "מאזדה יפן",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "שם רכב",
+                "name": "kinuy_mishari",
+                "type": "text",
+                "defaultValue": "car?.records[0]?.kinuy_mishari",
+                "placeholder": "מאזדה 3",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "מזהה דגם",
+                "name": "degem_nm",
+                "type": "text",
+                "defaultValue": "car?.records[0]?.degem_nm",
+                "placeholder": "מזהה דגם",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "רמת גימור",
+                "name": "ramat_gimur",
+                "type": "text",
+                "defaultValue": "car?.records[0]?.ramat_gimur",
+                "placeholder": "SPIRIT",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "שנת ייצור",
+                "name": "shnat_yitzur",
+                "type": "number",
+                "defaultValue": "car?.records[0]?.shnat_yitzur",
+                "placeholder": "2023",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "צבע רכב",
+                "name": "tzeva_rechev",
+                "type": "text",
+                "defaultValue": "car?.records[0]?.tzeva_rechev",
+                "placeholder": "כסף מטאלי",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "מועד עלייה לכביש",
+                "name": "moed_aliya_lakvish",
+                "type": "text",
+                "defaultValue": "car?.records[0]?.moed_aliya_lakvish",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "תוקף רישיון רכב",
+                "name": "tokef_dt",
+                "type": "date",
+                "defaultValue": "car?.records[0]?.tokef_dt",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "סוג רכב",
+                "name": "kvutzat_sug_rechev",
+                "type": "text",
+                "defaultValue": "car?.records[0]?.kvutzat_sug_rechev",
+                "placeholder": "אוטובוס / מיניבוס / טיולית..",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "נפח מנוע",
+                "name": "nefach_manoa",
+                "type": "text",
+                "defaultValue": "car?.records[0]?.nefach_manoa",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            },
+            {
+                "label": "ל' דלק ל-1 ק\"מ (משולב)",
+                "name": "tzrichat_delek",
+                "type": "number",
+                "placeholder": "11",
+                "defaultValue": "car?.records[0]?.tzrichat_delek",
+                "attributes": {
+                    "onChange": "handleCarInputs"
+                }
+            }
+        ]
+    }
+    );
 
     useEffect(() => {
         setUserCars(props?.userData?.cars);
@@ -82,123 +208,7 @@ const MyCars = (props) => {
         props.handlePopup(
             true,
             <div className={styles.editLicenseWrapper}>
-                <h3>עריכת רכב</h3>
-                <form
-                    onSubmit={(e) => handleCarSave(e)}
-                    className={styles.editLicenseFields}
-                >
-                    <label htmlFor="mispar_rechev">מספר רכב</label>
-                    <input
-                        type="number"
-                        name="mispar_rechev"
-                        id="mispar_rechev"
-                        maxLength={8}
-                        minLength={7}
-                        required
-                        defaultValue={car?.records[0]?.mispar_rechev}
-                        placeholder="XXX-XX-XXX או XX-XXX-XX"
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="tozeret_nm">יצרן</label>
-                    <input
-                        type="text"
-                        name="tozeret_nm"
-                        id="tozeret_nm"
-                        defaultValue={car?.records[0]?.tozeret_nm}
-                        placeholder="מאזדה יפן"
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="kinuy_mishari">שם רכב</label>
-                    <input
-                        type="text"
-                        name="kinuy_mishari"
-                        id="kinuy_mishari"
-                        defaultValue={car?.records[0]?.kinuy_mishari}
-                        placeholder="מאזדה 3"
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="degem_nm">מזהה דגם</label>
-                    <input
-                        type="text"
-                        name="degem_nm"
-                        id="degem_nm"
-                        defaultValue={car?.records[0]?.degem_nm}
-                        placeholder="מזהה דגם"
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="ramat_gimur">רמת גימור</label>
-                    <input
-                        type="text"
-                        name="ramat_gimur"
-                        id="ramat_gimur"
-                        defaultValue={car?.records[0]?.ramat_gimur}
-                        placeholder="SPIRIT"
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="shnat_yitzur">שנת ייצור</label>
-                    <input
-                        type="number"
-                        name="shnat_yitzur"
-                        id="shnat_yitzur"
-                        defaultValue={car?.records[0]?.shnat_yitzur}
-                        placeholder="2023"
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="tzeva_rechev">צבע רכב</label>
-                    <input
-                        type="text"
-                        name="tzeva_rechev"
-                        id="tzeva_rechev"
-                        defaultValue={car?.records[0]?.tzeva_rechev}
-                        placeholder="כסף מטאלי"
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="moed_aliya_lakvish">מועד עלייה לכביש</label>
-                    <input
-                        type="text"
-                        name="moed_aliya_lakvish"
-                        id="moed_aliya_lakvish"
-                        defaultValue={car?.records[0]?.moed_aliya_lakvish}
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="tokef_dt">תוקף רישיון רכב</label>
-                    <input
-                        type="date"
-                        name="tokef_dt"
-                        id="tokef_dt"
-                        defaultValue={car?.records[0]?.tokef_dt}
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="kvutzat_sug_rechev">סוג רכב</label>
-                    <input
-                        type="text"
-                        name="kvutzat_sug_rechev"
-                        id="kvutzat_sug_rechev"
-                        defaultValue={car?.records[0]?.kvutzat_sug_rechev}
-                        placeholder="אוטובוס / מיניבוס / טיולית.."
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="nefach_manoa">נפח מנוע</label>
-                    <input
-                        type="text"
-                        name="nefach_manoa"
-                        id="nefach_manoa"
-                        defaultValue={car?.records[0]?.nefach_manoa}
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <label htmlFor="tzrichat_delek">
-                        צריכת דלק ל-1 ק&quot;מ (משולב)
-                    </label>
-                    <input
-                        type="number"
-                        name="tzrichat_delek"
-                        id="tzrichat_delek"
-                        placeholder="11"
-                        defaultValue={car?.records[0]?.tzrichat_delek}
-                        onChange={(e) => handleCarInputs(e, car)}
-                    />
-                    <button type="submit">שמירה</button>
-                </form>
+                <GeneralForm buttonText={"שמירה"} json={formJson} onChangeFunc={handleCarInputs} onSubmitFunc={handleCarSave} passedData={car} />
             </div>
         );
     }
@@ -330,6 +340,8 @@ const MyCars = (props) => {
 
 
     const handleCarInputs = (e, carItem) => {
+        console.log('carItem');
+        console.log(carItem);
         const { name, value } = e.target;
         let exist = false;
         let newCars = userCars;
